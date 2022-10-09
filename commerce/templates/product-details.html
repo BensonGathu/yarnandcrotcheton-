@@ -5,6 +5,9 @@
 {% block content%}
 
 <body>
+    <style>
+
+    </style>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -12,7 +15,7 @@
 
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
+    <!-- <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__close">+</div>
         <ul class="offcanvas__widget">
             <li><span class="icon_search search-switch"></span></li>
@@ -24,14 +27,14 @@
             </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+            <a href="{% url 'index'%}"><img src="img/logo.png" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
             <a href="#">Login</a>
             <a href="#">Register</a>
         </div>
-    </div>
+    </div> -->
     <!-- Offcanvas Menu End -->
 
     <!-- Header Section Begin -->
@@ -44,9 +47,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="#">Women’s </a>
-                        <span>Essential structured blazer</span>
+                        <a href="{% url 'index'%}"><i class="fa fa-home"></i> Home</a>
+                        <a href="#">{{object.category}} </a>
+                        <span>{{object.title}}</span>
                     </div>
                 </div>
             </div>
@@ -60,26 +63,34 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="product__details__pic">
+                 
                         <div class="product__details__pic__left product__thumb nice-scroll">
+                            
                             <a class="pt active" href="#product-1">
-                                <img src="img/product/details/thumb-1.jpg" alt="">
+                                <img src="{{object.image.url}}" alt="">
                             </a>
+                           
                             <a class="pt" href="#product-2">
-                                <img src="img/product/details/thumb-2.jpg" alt="">
+                                <img src="{{object.image1.url}}" alt="">
                             </a>
                             <a class="pt" href="#product-3">
-                                <img src="img/product/details/thumb-3.jpg" alt="">
+                                <img src="{{object.image2.url}}" alt="">
                             </a>
                             <a class="pt" href="#product-4">
-                                <img src="img/product/details/thumb-4.jpg" alt="">
+                                <img src="{{object.image3.url}}" alt="">
+                            </a>
+                            <a class="pt" href="#product-4">
+                                <img src="{{object.image4.url}}" alt="">
                             </a>
                         </div>
                         <div class="product__details__slider__content">
                             <div class="product__details__pic__slider owl-carousel">
-                                <img data-hash="product-1" class="product__big__img" src="img/product/details/product-1.jpg" alt="">
-                                <img data-hash="product-2" class="product__big__img" src="img/product/details/product-3.jpg" alt="">
-                                <img data-hash="product-3" class="product__big__img" src="img/product/details/product-2.jpg" alt="">
-                                <img data-hash="product-4" class="product__big__img" src="img/product/details/product-4.jpg" alt="">
+                                <img data-hash="product-1" class="product__big__img" src="{{object.image.url}}" alt="">
+                                <img data-hash="product-2" class="product__big__img" src="{{object.image1.url}}" alt="">
+                                <img data-hash="product-3" class="product__big__img" src="{{object.image2.url}}" alt="">
+                                <img data-hash="product-4" class="product__big__img" src="{{object.image3.url}}" alt="">
+                                <img data-hash="product-4" class="product__big__img" src="{{object.image4.url}}" alt="">
+
                             </div>
                         </div>
                     </div>
@@ -95,7 +106,7 @@
                             <i class="fa fa-star"></i>
                             <span>( 138 reviews )</span>
                         </div>
-                        <div class="product__details__price">Kes 
+                        <div class="product__details__price">Ksh 
                             {%if object.discount_price %}
                             {{object.discount_price}}
                             <span><del>{{object.price}}</del></span>
@@ -104,13 +115,15 @@
                             {%endif%}</div>
                         <p>{{object.desc}}.</p>
                         <div class="product__details__button">
-                            <div class="quantity">
+                            <!-- <div class="quantity">
                                 <span>Quantity:</span>
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
+                                <div class="pro-qt">
+
                                 </div>
-                            </div>
+                            </div> -->
                             <a href="{{ object.get_item_to_cart_url }}" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+
+                           
                             <ul>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
@@ -331,6 +344,7 @@
         </div>
     </section>
     <!-- Product Details Section End -->
+    
 
     <!-- Instagram Begin -->
     <div class="instagram">

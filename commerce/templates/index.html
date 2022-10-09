@@ -40,9 +40,9 @@
     <section class="categories">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-6 p-0">
-                    <div class="categories__item categories__large__item set-bg"
-                    data-setbg="{% static 'img/categories/cproject.png'%}">
+                <div class="col-lg-5 p-0 crotchet-products">
+                    <div class="categories__item categories__large__item set-bg "
+                    data-setbg="{% static 'img/categories/cproject.png'%}" style="border-radius: 20px;" >
                     <div class="categories__text">
                         <h1>Crotchet Products</h1>
                         <p>Sitamet, consectetur adipiscing elit, sed do eiusmod tempor incidid-unt labore
@@ -50,11 +50,19 @@
                         <a href="#">Shop now</a>
                     </div>
                 </div>
+                <!-- <div class="categories__item set-bg" data-setbg="{% static 'img/categories/bagss.png' %}" style="border-radius: 20px; height: 27%;">
+                    <div class="categories__text">
+                        <h4>Crotchet Bags</h4>
+                        <p>273 items</p>
+                        <a href="#">Shop now</a>
+                    </div>
+                </div> -->
             </div>
-            <div class="col-lg-6">
+            
+            <div class="col-lg-7 string-art-group">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/arts.png' %}">
+                    <div class="col-lg-4 col-md-4 col-sm-4 p-0" >
+                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/arts.png' %}" style="border-radius: 20px; ">
                             <div class="categories__text">
                                 <h4>String Art</h4>
                                 <p>358 items</p>
@@ -62,8 +70,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/bagss.png' %}" >
+                    <div class="col-lg-8 col-md-8 col-sm-8 p-0 crotchet-bags" >
+                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/bagss.png' %}" style="border-radius: 20px; ">
                             <div class="categories__text">
                                 <h4>Crotchet Bags</h4>
                                 <p>273 items</p>
@@ -71,8 +79,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/acce.png' %}">
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0 yarn-accessories">
+                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/acce.png' %}" style="border-radius: 20px;">
                             <div class="categories__text">
                                 <h4>Yarn & Accessories</h4>
                                 <p>159 items</p>
@@ -80,8 +88,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/lastacc.png' %}">
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0 all-accessories">
+                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/lastacc.png' %}"style="border-radius: 20px;">
                             <div class="categories__text">
                                 <h4>Accessories</h4>
                                 <p>792 items</p>
@@ -90,6 +98,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -120,7 +129,7 @@
         <div class="row property__gallery">
             <div class="col-lg-3 col-md-4 col-sm-6 mix string-art">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}">
+                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}" style="border-radius: 20px;">
                         <div class="label new">New</div>
                         <ul class="product__hover">
                             <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
@@ -143,7 +152,7 @@
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mix Crotchet">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-2.jpg' %}">
+                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-2.jpg' %}" style="border-radius: 20px;">
                         <ul class="product__hover">
                             <li><a href="{% static 'img/product/product-2.jpg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
                             <li><a href="#"><span class="icon_heart_alt"></span></a></li>
@@ -165,7 +174,7 @@
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mix  accessories">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-3.jpg'%}">
+                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-3.jpg'%}" style="border-radius: 20px;">
                         <div class="label stockout">out of stock</div>
                         <ul class="product__hover">
                             <li><a href="{% static 'img/product/product-3.jpg'%}" class="image-popup"><span class="arrow_expand"></span></a></li>
@@ -594,48 +603,48 @@
 <div class="instagram">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-1.jpg'%}">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
+                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-1.jpg'%}" style="border-radius: 20px;">
                     <div class="instagram__text">
                         <i class="fa fa-instagram"></i>
                         <a href="#">@ ashion_shop</a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-2.jpg'%}">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
+                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-2.jpg'%}" style="border-radius: 20px;">
                     <div class="instagram__text">
                         <i class="fa fa-instagram"></i>
                         <a href="#">@ ashion_shop</a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-3.jpg'%}">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
+                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-3.jpg'%}" style="border-radius: 20px;"> 
                     <div class="instagram__text">
                         <i class="fa fa-instagram"></i>
                         <a href="#">@ ashion_shop</a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-4.jpg'%}">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
+                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-4.jpg'%}" style="border-radius: 20px;">
                     <div class="instagram__text">
                         <i class="fa fa-instagram"></i>
                         <a href="#">@ ashion_shop</a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-5.jpg'%}">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
+                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-5.jpg'%}" style="border-radius: 20px;">
                     <div class="instagram__text">
                         <i class="fa fa-instagram"></i>
                         <a href="#">@ ashion_shop</a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-6.jpg'%}">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
+                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-6.jpg'%}" style="border-radius: 20px;">
                     <div class="instagram__text">
                         <i class="fa fa-instagram"></i>
                         <a href="#">@ ashion_shop</a>
