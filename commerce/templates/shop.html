@@ -5,6 +5,7 @@
 {% block content%}
 
 <body>
+ 
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -12,6 +13,26 @@
 
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__close">+</div>
+        <ul class="offcanvas__widget">
+            <li><span class="icon_search search-switch"></span></li>
+            <li><a href="#"><span class="icon_heart_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+            <li><a href="#"><span class="icon_bag_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+        </ul>
+        <div class="offcanvas__logo">
+            <a href="./index.html"><img src="{% static 'img/logo.png' %}" alt="logo should be"></a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__auth">
+            <a href="#">Login</a>
+            <a href="#">Register</a>
+        </div>
+    </div>
   
     <!-- Offcanvas Menu End -->
 
@@ -25,7 +46,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
                         <span>Shop</span>
                     </div>
                 </div>
@@ -35,6 +56,7 @@
     <!-- Breadcrumb End -->
 
     <!-- Shop Section Begin -->
+   
     <section class="shop spad">
         <div class="container">
             <div class="row">
@@ -252,9 +274,9 @@
                         {% for items in object_list %}
                         
                         <div class="col-lg-4 col-md-6">
-                           
+                            <a href="{{ items.get_absolute_url }}">
                             <div class="product__item">
-                                <a href="{{ items.get_absolute_url }}">
+                               
                                 <div class="product__item__pic set-bg" data-setbg="{% static 'img/shop/shop-1.jpg' %}">
                            
                                     <div class="label new">New</div>
@@ -266,7 +288,7 @@
                                 </div>
                            
                                 <div class="product__item__text">
-                                    <h6><a href="{{ items.get_absolute_url}}">{{items.title}}</a></h6>
+                                    <h6><a href="#">{{items.title}}</a></h6>
                                     <div class="rating">
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
@@ -274,7 +296,7 @@
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                     </div>
-                                    <div class="product__price">Kes 
+                                    <div class="product__price"> Ksh
                                         {%if items.discount_price %}
                                         {{items.discount_price}}
                                         {%else%}
@@ -284,23 +306,32 @@
                                 </div>
                                 </a>
                             </div>
-                            {%endfor%}
+                            
                         </div>
-
-               
+                        {%endfor%}
+                        {% if is_paginated %}
                         <div class="col-lg-12 text-center">
+                          
                             <div class="pagination__option">
-                                <a href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
+                                {% if page_obj.has_previous %}
+                                <a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a>
+    
+                                {%endif%}
+                                <a class="page-item active" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+                        
+                                {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+                                {%endif%}
                             </div>
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
         </div>
+       
     </section>
+ 
     <!-- Shop Section End -->
 
     <!-- Instagram Begin -->

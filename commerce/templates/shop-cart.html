@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="{% url 'index'%}"><i class="fa fa-home"></i> Home</a>
                         <span>Shopping cart</span>
                     </div>
                 </div>
@@ -62,6 +62,7 @@
                         <table>
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Product</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
@@ -70,11 +71,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for order_item in order.items.all %}
                                 <tr>
+                                    <td style="padding: 10px;">{{forloop.counter}}</td>
                                     <td class="cart__product__item">
-                                        <img src="img/shop-cart/cp-1.jpg" alt="">
+                                        <img src="{{order_item.item.image.url}}" alt="" height="100px">
                                         <div class="cart__product__item__title">
-                                            <h6>Chain bucket bag</h6>
+                                            <h6>{{ order_item.item.title }}</h6>
                                             <div class="rating">
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
@@ -84,101 +87,52 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="cart__price">$ 150.0</td>
+                                    <td class="cart__price">Ksh {%if order_item.item.discount_price %} 
+                                        {{ order_item.item.discount_price }}
+                                        {%else%}
+                                        {{ order_item.item.price }}
+                                        
+                                        {%endif%}
+                                    </td>
                                     <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
+                                        <div class="">
+                                           
+                                            <a href="{% url 'remove_single_item_from_cart' order_item.item.slug %}"><i class="bi bi-dash btn"></i></a>{{order_item.quantity}} <a href="{% url 'add-to-cart' order_item.item.slug  %}"><i class="bi bi-plus btn"></i></a>
                                         </div>
                                     </td>
-                                    <td class="cart__total">$ 300.0</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
+                                    <td class="cart__total">Ksh 
+                                        {%if order_item.item.discount_price %}
+                                        {{ order_item.get_item_discount_price}}
+                                        <span class="badge badge-success"><small>Ksh {{order_item.get_amount_saved}}</small>
+                                        </span>
+
+
+                                        {%else%}
+                                        {{ order_item.get_item_total_price}}
+                                        {%endif%}
+                                    </td>
+                                    <td class="" ><a href="{% url 'remove-from-cart' order_item.item.slug %}"><span class="icon_trash btn" style="color:red;" ></span></a></td>
+                                </tr>
+
+                                {% empty%}
+                                <tr>
+                                    <td colspan="4">Your Cart is empty</td>
                                 </tr>
                                 <tr>
-                                    <td class="cart__product__item">
-                                        <img src="img/shop-cart/cp-2.jpg" alt="">
-                                        <div class="cart__product__item__title">
-                                            <h6>Zip-pockets pebbled tote briefcase</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
+                                    <td colspan="4">  <a href="#" class="col-md-6"><button type="button" class="btn btn-primary ">Continue Shopping</button>
+
                                     </td>
-                                    <td class="cart__price">$ 170.0</td>
-                                    <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="cart__total">$ 170.0</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
                                 </tr>
-                                <tr>
-                                    <td class="cart__product__item">
-                                        <img src="img/shop-cart/cp-3.jpg" alt="">
-                                        <div class="cart__product__item__title">
-                                            <h6>Black jean</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 85.0</td>
-                                    <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="cart__total">$ 170.0</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="cart__product__item">
-                                        <img src="img/shop-cart/cp-4.jpg" alt="">
-                                        <div class="cart__product__item__title">
-                                            <h6>Cotton Shirt</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 55.0</td>
-                                    <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="cart__total">$ 110.0</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
+                               
+                                {%endfor%}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="cart__btn">
-                        <a href="#">Continue Shopping</a>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="cart__btn update__btn">
-                        <a href="#"><span class="icon_loading"></span> Update cart</a>
-                    </div>
-                </div>
-            </div>
+       
+            
+            {% if order.get_order_total %}
             <div class="row">
                 <div class="col-lg-6">
                     <div class="discount__content">
@@ -193,19 +147,26 @@
                     <div class="cart__total__procced">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span>$ 750.0</span></li>
-                            <li>Total <span>$ 750.0</span></li>
+                            <li>Total <span>Ksh {{ order.get_order_total }}</span></li>
+                            
                         </ul>
-                        <a href="#" class="primary-btn">Proceed to checkout</a>
+                        <div class="row  ">
+                        <a href="#" class="col-md-6"><button type="button" class="btn btn-primary ">Continue Shopping</button>
+                        </a>
+
+                        <a href="#" class="col-md-6"><button type="button" class="btn btn-warning ">Proceed to checkout</button>
+                        </div>
                     </div>
                 </div>
             </div>
+            {%endif%}
+        </div>
         </div>
     </section>
     <!-- Shop Cart Section End -->
 
     <!-- Instagram Begin -->
-    <div class="instagram">
+    <!-- <div class="instagram">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
@@ -258,7 +219,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Instagram End -->
 
     <!-- Footer Section Begin -->

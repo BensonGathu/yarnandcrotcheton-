@@ -1,38 +1,61 @@
+from email import message
 from multiprocessing import context
 from django.shortcuts import render,redirect, get_object_or_404
+from django.views import View
 from pytz import timezone
 from .models import Item,Order,OrderItem
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm
 from django.views.generic import ListView,DetailView
+from datetime import datetime
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+
 # Create your views here.
 
-
+#homepage
 def index(request):
+    
     context = {
         "items":Item.objects.all()
     }
     return render(request,'index.html',context)
  
 
-
+#includes all products
 class shopView(ListView):
+    paginate_by=10
     model = Item
+   
     template_name = "shop.html"
 
-
-class productDetailsView(DetailView):
+#individual products details
+class productDetailsView(LoginRequiredMixin ,DetailView):
     model= Item
     template_name = "product-details.html"
-
-def shop_cart(request):
-    context = {
-        "":""
-    }
-
-    return render(request,"shop-cart.html",context)
+    # images = Item.objects.get()
 
 
+
+class shop_cart(LoginRequiredMixin,View):
+    model=Order
+    def get(self,*args,**kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user,ordered=False)
+            context={
+                "order":order
+            }
+            return render(self.request,"shop-cart.html",context)
+        except ObjectDoesNotExist:
+            messages.error(self.request,"You do not have an active order")
+            return redirect("index")
+
+@login_required
 def checkout(request):
     context = {
         "":""
@@ -53,6 +76,15 @@ def crotchets(request):
     }
     return render(request,"crotchets.html")
 
+@login_required
+def orders(request):
+    context = {
+
+    }
+
+    return render(request,"orders.html")
+
+#userRegistration page
 def signuppage(request):
     form = CreateUserForm()
 
@@ -60,6 +92,7 @@ def signuppage(request):
         form =CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,"Registered Successfully. Login to continue")
             return redirect("loginpage")
 
     context = {
@@ -67,32 +100,125 @@ def signuppage(request):
     }
     return render(request,"auth/signup.html",context)
 
-
+#userloginpage
 def loginpage(request):
-    context = {
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username,
+                            password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Logged in as' + ' ' + username)
+            return redirect("index")
+            # if user.is_admin:
+            #     return redirect('dashboard')
+            # if user.is_customer:
+            #     return redirect('home')
+        else:
+            messages.error(request, 'Invalid Username and/or Password')
 
-    }
-    return render(request,"auth/login.html",context)
+    context = {}
+    return render(request, 'auth/login.html', context)
 
+def logoutUser(request):
+    current_user = request.user
+    logout(request)
+    messages.info(
+        request, 'You have logged out.')
+    # if current_user.is_admin:
+    return redirect('index')
+    
+
+#adding an item to cart
+
+@login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Item,slug=slug)
-    order_item = OrderItem.objects.get_or_create(item=item,user=request.user,ordered=False)
+    order_item ,created= OrderItem.objects.get_or_create(item=item,user=request.user,ordered=False)
     order_qs = Order.objects.filter(user=request.user,ordered=False)
     if order_qs.exists():
         order = order_qs[0]
 
-        #check if the prder item is in the order
-        if order.items.filter(item__sulg=item.slug).exists():
-            order_item.quantity +=1
-            order_item.save()
+        #check if the order item is in the order
+        if order.items.filter(item__slug=item.slug).exists():
+            if order_item.quantity >=1:
+                order_item.quantity +=1
+                order_item.save()
+            else:
+                order_item.quantity =1
+                order_item.save()
+            messages.success(request,"Item updated Successfully")
+
 
         else:
+            messages.success(request,"Item added Successfully")
             order.items.add(order_item)
+            order_item.quantity +=1
+
+            order_item.save()
     else:
-        ordered_date = timezone.now()
+        ordered_date = datetime.now()
         order = Order.objects.create(
             user=request.user,ordered_date=ordered_date)
         order.items.add(order_item)
     
-    return redirect("core:product-details",slug=slug)
+    return redirect("shop-cart")
+
+#removing an item from the cart
+
+@login_required
+def remove_from_cart(request,slug):
+    item = get_object_or_404(Item,slug=slug)
+    order_qs = Order.objects.filter(user=request.user,ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        print("order",order)
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item = OrderItem.objects.filter(item=item,user=request.user,ordered=False)[0]
+            order_item.quantity =0
+            order.items.remove(order_item)
+            order_item.save()
+            messages.success(request,"Item removed Successfully")
+
+        else:
+            #add a message saying the order does not contain the item
+            messages.warning(request, 'The Item Is not in your order')
+            return redirect("shop-cart")
+    else:
+        #add a message saying the user does not have an order
+        messages.warning(request, 'You have no order')
+        return redirect("shop-cart")
+    return redirect("shop-cart")
+
+
+@login_required
+def remove_single_item_from_cart(request,slug):
+    item = get_object_or_404(Item,slug=slug)
+    order_qs = Order.objects.filter(user=request.user,ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        print("order",order)
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item = OrderItem.objects.filter(item=item,user=request.user,ordered=False)[0]
+            if  order_item.quantity >1:
+                order_item.quantity -=1
+                order_item.save()
+            else:
+                order.items.remove(order_item)   
+            messages.success(request,"Item updated Successfully")
+
+        else:
+            #add a message saying the order does not contain the item
+            messages.warning(request, 'The Item Is not in your order')
+            return redirect("shop-cart")
+    else:
+        #add a message saying the user does not have an order
+        messages.warning(request, 'You have no order')
+        return redirect("shop-cart")
+    return redirect("shop-cart")
+
+
+
+    
 
