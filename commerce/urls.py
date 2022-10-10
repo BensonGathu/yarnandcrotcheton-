@@ -4,8 +4,8 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import index, productDetailsView,shop_cart,remove_from_cart,shopView,orders,add_to_cart,checkout,signuppage,loginpage,logoutUser,string_arts,crotchets,remove_single_item_from_cart
-# app_name = 'commerce'
+from .views import index, productDetailsView,shop_cart,remove_from_cart,shopView,orders,add_to_cart,signuppage,loginpage,logoutUser,string_arts,crotchets,remove_single_item_from_cart,checkoutview
+app_name = 'commerce'
 urlpatterns = [ 
     
     path("",index,name="index"),
@@ -17,7 +17,7 @@ urlpatterns = [
     path("remove_single_item_from_cart/<slug>/",remove_single_item_from_cart,name="remove_single_item_from_cart"),
     path("string-arts",string_arts,name="string-arts"),
     path("crotchets",crotchets,name="crotchets"),
-    path("checkout",checkout,name="checkout"),
+    path("checkout",checkoutview.as_view(),name="checkout"),
     path("orders",orders,name="orders"),
     path("signuppage",signuppage,name="signuppage"),
     path("loginpage",loginpage,name="loginpage"),

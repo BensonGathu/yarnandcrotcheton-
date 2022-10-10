@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'commerce',
      "django_bootstrap5",
-     'crispy_forms'
+     'crispy_forms',
+     'django_countries'
 ]
 SITE_ID = 1
 # Provider specific settings

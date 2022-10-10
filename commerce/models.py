@@ -1,8 +1,10 @@
+from ast import mod
 from distutils.command.upload import upload
 from email.policy import default
 from random import choices
 from sre_constants import CATEGORY
 from statistics import mode
+from tokenize import blank_re
 from turtle import title
 from unicodedata import category
 from unittest import result
@@ -96,6 +98,7 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    shipping_address = models.ForeignKey('ShippingAddress',on_delete=models.SET_NULL,null=True,blank=True)
 
     def __str__(self):
         return self.user.username
@@ -106,4 +109,19 @@ class Order(models.Model):
             total += order_item.get_final_total()
             print("total")
         return total
-        
+
+class ShippingAddress(models.Model):
+    user =  models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    county = models.CharField(max_length=100)
+    town= models.CharField(max_length=100)
+    street_address= models.CharField(max_length=100)
+    apartment_address = models.CharField(max_length=100)
+    zip =models.CharField(max_length=100)
+    phone  =models.IntegerField()
+    email =models.EmailField()
+    order_notes=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.user.username
