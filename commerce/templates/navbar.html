@@ -1,71 +1,111 @@
-{% load static %}
-{% load cart_template_tags %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% load static %} {% load cart_template_tags %}
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Cookie&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+  crossorigin="anonymous"
+/>
 <header class="header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xl-2 col-lg-2">
-                <div class="header__logo">
-                    <a href="{%url 'index' %}"><img src="{% static 'img/logo.png' %}" ></a>
-                </div>
-            </div>
-            <div class="col-xl-8 col-lg-6">
-                <nav class="header__menu">
-                    <ul>
-                        <li class="active"><a href="{% url 'index'%}">Home</a></li>
-                        <li><a href="{% url 'string-arts' %}">String Arts</a></li>
-                        <li><a href="{% url 'crotchets' %}">Crotchets</a>
-                            <ul class="dropdown">
-                                <li><a href="#">Crotchet Products</a></li>
-                                <li><a href="#">Crotchet Bags</a></li>
-                                
-                            </ul>
-                        </li>
-                        <li><a href="#"> Yarn & Accessories</a></li>
-                        <li><a href="{% url 'shop' %}">Shop</a></li>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-1">
+        <div class="header__logo">
+          <a href="{%url 'commerce:index' %}"
+            ><img src="{% static 'img/logo.png' %}"
+          /></a>
+        </div>
+      </div>
+      <div class="col-md-8 col-xl-8 col-lg-6">
+        <nav class="header__menu">
+          <ul>
+            <li class="active"><a href="{% url 'commerce:index'%}">Home</a></li>
+            <li><a href="{% url 'commerce:string-arts' %}">String Arts</a></li>
+            <li>
+              <a href="{% url 'commerce:crotchets' %}">Crotchets</a>
+              <ul class="dropdown">
+                <li><a href="#">Crotchet Products</a></li>
+                <li><a href="#">Crotchet Bags</a></li>
+              </ul>
+            </li>
+            <li><a href="#"> Yarn & Accessories</a></li>
+            <li><a href="{% url 'commerce:shop' %}">Shop</a></li>
+            <li><span class="icon_search search-switch"></span></li>
+
+         
+          </ul>
+        </nav>
+      </div>
+      <div class="col-md-3 col-lg-3">
+        <div class="header__right">
+          <div class="header__right__auth">
                      
-                        <li> <form class="form-inline my-2 input-sm">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                          </form>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="col-lg-2">
-                <div class="header__right">
-                    <div class="header__right__auth">
-                        <ul>
-                        {% if request.user.is_authenticated %}
-                        <li><a href="#">{{request.user}}</a></li>
-                        <li><ul class="dropdown">
-                            <li><a href="{% url 'orders' %}">Orders</a></li>
-                            
-                            </ul>
-                        </li>
-                            
-                        <a href="{% url 'logout'%}">Logout</a>
-                        
-                        {% else %}
-                        <li><a href="{% url 'loginpage'%}">Login</a></li>
-                        <li><a href="{% url 'signuppage'%}">Register</a></li>
-                        {% endif %}
-                    </ul>
                     </div>
-                    <ul class="header__right__widget">
-                        <li><span class="icon_search search-switch"></span></li>
-                        <li><a href="#"><span class="icon_heart_alt"></span>
-                            <div class="tip">0</div>
-                        </a></li>
-                        <li><a href="{% url 'shop-cart'%}"><span class="icon_bag_alt"></span>
-                            <div class="tip"></div>
-                        </a></li>
-                    </ul>
-                </div>
-            </div>
+          <ul class="header__right__widget">
+            {% if request.user.is_authenticated %}
+            <li><a href="#">{{request.user}}</a></li>
+    
+            <li><a href="{% url 'commerce:logout'%}">Logout</a></li>
+
+            {% else %}
+            <li><a href="{% url 'commerce:loginpage'%}">Login</a></li>
+            <li><a href="{% url 'commerce:signuppage'%}">Register</a></li>
+            {% endif %}
+
+            <li>
+              <a href="{% url 'commerce:shop-cart'%}"
+                ><span class="icon_bag_alt"></span>
+                <div class="tip"></div>
+              </a>
+            </li>
+            <li> <div class="dropdown">
+                <a
+                  class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                  href="#"
+                  id="navbarDropdownMenuAvatar"
+                  role="button"
+                  data-mdb-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                    class="rounded-circle"
+                    height="25"
+                    alt="Black and White Portrait of a Man"
+                    loading="lazy"
+                  />
+                </a>
+                <ul
+                  class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="navbarDropdownMenuAvatar"
+                >
+                  <li>
+                    <a class="dropdown-item" href="#">My profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Settings</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Logout</a>
+                  </li>
+                </ul>
+              </div></li>
+
+          </ul>
         </div>
-        <div class="canvas__open">
-            <i class="fa fa-bars"></i>
-        </div>
+      </div>
     </div>
+    <div class="canvas__open">
+      <i class="fa fa-bars"></i>
+    </div>
+  </div>
 </header>
+

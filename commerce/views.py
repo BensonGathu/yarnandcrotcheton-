@@ -3,9 +3,10 @@ from multiprocessing import context
 from django.shortcuts import render,redirect, get_object_or_404
 from django.views import View
 from pytz import timezone
-from .models import Item,Order,OrderItem
+from requests import request
+from .models import Item,Order,OrderItem,ShippingAddress
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CreateUserForm
+from .forms import CreateUserForm,CheckoutForm
 from django.views.generic import ListView,DetailView
 from datetime import datetime
 from django.contrib import messages
@@ -53,15 +54,60 @@ class shop_cart(LoginRequiredMixin,View):
             return render(self.request,"shop-cart.html",context)
         except ObjectDoesNotExist:
             messages.error(self.request,"You do not have an active order")
-            return redirect("index")
+            return redirect("commerce:index")
 
-@login_required
-def checkout(request):
-    context = {
-        "":""
-    }
 
-    return render(request,"checkout.html",context)
+class checkoutview(LoginRequiredMixin,View):
+    def get(self,*args,**kwargs):
+        form = CheckoutForm()
+        context = {
+        "form": form
+        }
+        return render(self.request, "checkout.html",context)
+
+    def post(self,*args,**kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        try:
+            order = Order.objects.get(user=request.user,ordered=False)
+            if form.is_valid():
+                firstname = form.cleaned_data.get("firstname")
+                lastname = form.cleaned_data.get("lastname")
+                county = form.cleaned_data.get("county")
+                town = form.cleaned_data.get("town")
+                street_address = form.cleaned_data.get("street_address")
+                apartment_address = form.cleaned_data.get("apartment_address")
+                zip = form.cleaned_data.get("zip")
+                phone = form.cleaned_data.get("phone")
+                email = form.cleaned_data.get("email")
+                # save_info = form.cleaned_data.get("save_info")
+                payment_option = form.cleaned_data.get("payment_option")
+                order_notes = form.cleaned_data.get("order_notes")
+                
+                shippingaddress = ShippingAddress(
+                    user = request.user,
+                    firstname=firstname,
+                    lastname= lastname,
+                    county=county,
+                    town=town,
+                    street_address= street_address,
+                    apartment_address=apartment_address,
+                    zip=zip,
+                    phone=phone,
+                    email=email,
+                    order_notes= order_notes
+                )
+                shippingaddress.save()
+                order.shipping_address = shippingaddress
+                order.save()
+
+                return redirect("commerce:checkout")
+
+            messages.warning(self.request,"Failed Checkout")
+            return redirect("commerce:checkout")
+
+        except ObjectDoesNotExist:
+            messages.error(self.request,"You do not have an active order")
+            return redirect("commerce:checkout")
 
 def string_arts(request):
     context = {
@@ -93,7 +139,7 @@ def signuppage(request):
         if form.is_valid():
             form.save()
             messages.success(request,"Registered Successfully. Login to continue")
-            return redirect("loginpage")
+            return redirect("commerce:loginpage")
 
     context = {
         "form":form
@@ -110,7 +156,7 @@ def loginpage(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'Logged in as' + ' ' + username)
-            return redirect("index")
+            return redirect("commerce:index")
             # if user.is_admin:
             #     return redirect('dashboard')
             # if user.is_customer:
@@ -127,7 +173,7 @@ def logoutUser(request):
     messages.info(
         request, 'You have logged out.')
     # if current_user.is_admin:
-    return redirect('index')
+    return redirect('"commerce:index')
     
 
 #adding an item to cart
@@ -163,7 +209,7 @@ def add_to_cart(request, slug):
             user=request.user,ordered_date=ordered_date)
         order.items.add(order_item)
     
-    return redirect("shop-cart")
+    return redirect("commerce:shop-cart")
 
 #removing an item from the cart
 
@@ -184,12 +230,12 @@ def remove_from_cart(request,slug):
         else:
             #add a message saying the order does not contain the item
             messages.warning(request, 'The Item Is not in your order')
-            return redirect("shop-cart")
+            return redirect("commerce:shop-cart")
     else:
         #add a message saying the user does not have an order
         messages.warning(request, 'You have no order')
-        return redirect("shop-cart")
-    return redirect("shop-cart")
+        return redirect("commerce:shop-cart")
+    return redirect("commerce:shop-cart")
 
 
 @login_required
@@ -211,12 +257,12 @@ def remove_single_item_from_cart(request,slug):
         else:
             #add a message saying the order does not contain the item
             messages.warning(request, 'The Item Is not in your order')
-            return redirect("shop-cart")
+            return redirect("commerce:shop-cart")
     else:
         #add a message saying the user does not have an order
         messages.warning(request, 'You have no order')
-        return redirect("shop-cart")
-    return redirect("shop-cart")
+        return redirect("commerce:shop-cart")
+    return redirect("commerce:shop-cart")
 
 
 

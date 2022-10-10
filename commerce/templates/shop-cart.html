@@ -12,26 +12,7 @@
 
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
-        <div class="offcanvas__close">+</div>
-        <ul class="offcanvas__widget">
-            <li><span class="icon_search search-switch"></span></li>
-            <li><a href="#"><span class="icon_heart_alt"></span>
-                <div class="tip">2</div>
-            </a></li>
-            <li><a href="#"><span class="icon_bag_alt"></span>
-                <div class="tip">2</div>
-            </a></li>
-        </ul>
-        <div class="offcanvas__logo">
-            <a href="./index.html"><img src="img/logo.png" alt=""></a>
-        </div>
-        <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__auth">
-            <a href="#">Login</a>
-            <a href="#">Register</a>
-        </div>
-    </div>
+    {% include "wrapper.html" %}
     <!-- Offcanvas Menu End -->
 
     <!-- Header Section Begin -->
@@ -44,7 +25,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="{% url 'index'%}"><i class="fa fa-home"></i> Home</a>
+                        <a href="{% url 'commerce:index'%}"><i class="fa fa-home"></i> Home</a>
                         <span>Shopping cart</span>
                     </div>
                 </div>
@@ -97,7 +78,7 @@
                                     <td class="cart__quantity">
                                         <div class="">
                                            
-                                            <a href="{% url 'remove_single_item_from_cart' order_item.item.slug %}"><i class="bi bi-dash btn"></i></a>{{order_item.quantity}} <a href="{% url 'add-to-cart' order_item.item.slug  %}"><i class="bi bi-plus btn"></i></a>
+                                            <a href="{% url 'commerce:remove_single_item_from_cart' order_item.item.slug %}"><i class="bi bi-dash btn"></i></a>{{order_item.quantity}} <a href="{% url 'commerce:add-to-cart' order_item.item.slug  %}"><i class="bi bi-plus btn"></i></a>
                                         </div>
                                     </td>
                                     <td class="cart__total">Ksh 
@@ -111,7 +92,7 @@
                                         {{ order_item.get_item_total_price}}
                                         {%endif%}
                                     </td>
-                                    <td class="" ><a href="{% url 'remove-from-cart' order_item.item.slug %}"><span class="icon_trash btn" style="color:red;" ></span></a></td>
+                                    <td class="" ><a href="{% url 'commerce:remove-from-cart' order_item.item.slug %}"><span class="icon_trash btn" style="color:red;" ></span></a></td>
                                 </tr>
 
                                 {% empty%}
@@ -119,7 +100,7 @@
                                     <td colspan="4">Your Cart is empty</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4">  <a href="#" class="col-md-6"><button type="button" class="btn btn-primary ">Continue Shopping</button>
+                                    <td colspan="4">  <a href="{%url 'commerce:shop'%}" class="col-md-6"><button type="button" class="btn btn-primary ">Continue Shopping</button>
 
                                     </td>
                                 </tr>
@@ -151,10 +132,10 @@
                             
                         </ul>
                         <div class="row  ">
-                        <a href="#" class="col-md-6"><button type="button" class="btn btn-primary ">Continue Shopping</button>
+                        <a href="{%url 'commerce:shop'%}" class="col-md-6"><button type="button" class="btn btn-primary ">Continue Shopping</button>
                         </a>
 
-                        <a href="#" class="col-md-6"><button type="button" class="btn btn-warning ">Proceed to checkout</button>
+                        <a href="{%url 'commerce:checkout'%}" class="col-md-6"><button type="button" class="btn btn-warning ">Proceed to checkout</button>
                         </div>
                     </div>
                 </div>
