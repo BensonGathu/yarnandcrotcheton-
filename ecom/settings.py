@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 from decouple import config,Csv
 import dj_database_url
+import django
+from django.utils.encoding import force_str
+django.utils.encoding.force_text = force_str
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'mpesa',
+   
+    'django_daraja',
     
     
     'django.contrib.sites',
@@ -49,7 +55,8 @@ INSTALLED_APPS = [
     'commerce',
      "django_bootstrap5",
      'crispy_forms',
-     'django_countries'
+    #  'django_countries',
+    #  'phonenumbers',
 ]
 SITE_ID = 1
 # Provider specific settings
@@ -65,6 +72,30 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+# MPESA_CONFIG = { 
+#     "CONSUMER_KEY": config('CONSUMER_KEY'),
+#     "CONSUMER_SECRET": config('CONSUMER_SECRET'),
+#     "HOST_NAME":  config('HOST_NAME'),
+#     "PASS_KEY": config('PASS_KEY'),
+#     "SAFARICOM_API": config('SAFARICOM_API'),
+#     "SHORT_CODE": config('SHORT_CODE'),
+#     'CERTIFICATE_FILE': config('CERTIFICATE_FILE'),
+#     'AUTH_URL': config('AUTH_URL'),
+#     'TILL_NUMBER':config('TILL_NUMBER'),
+#     'TRANSACTION_TYPE': config('TRANSACTION_TYPE'),
+
+# }
+
+MPESA_ENVIRONMENT = config('MPESA_ENVIRONMENT')
+MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY')
+MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET')
+MPESA_SHORTCODE = config('MPESA_SHORTCODE')
+MPESA_EXPRESS_SHORTCODE = config('MPESA_EXPRESS_SHORTCODE')
+MPESA_SHORTCODE_TYPE = config('MPESA_SHORTCODE_TYPE')
+MPESA_PASSKEY = config('MPESA_INITIATOR_USERNAME')
+MPESA_INITIATOR_USERNAME = config('MPESA_INITIATOR_USERNAME')
+MPESA_INITIATOR_SECURITY_CREDENTIAL = config('MPESA_INITIATOR_SECURITY_CREDENTIAL')
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

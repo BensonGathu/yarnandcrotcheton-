@@ -1,4 +1,5 @@
 from ast import mod
+import uuid
 from distutils.command.upload import upload
 from email.policy import default
 from random import choices
@@ -12,8 +13,10 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.forms import IntegerField
 from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 # Create your models here.
@@ -125,3 +128,23 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+
+STATUS = ((1, "Pending"), (0, "Complete"))
+"""This model records all the mpesa payment transactions"""
+class PaymentTransaction(models.Model):
+    user =  models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    transaction_no = models.CharField(default=uuid.uuid4, max_length=50, unique=True)
+    phone_number = IntegerField()
+    checkout_request_id = models.CharField(max_length=200)
+    reference = models.CharField(max_length=40, blank=True)
+    description = models.TextField(null=True, blank=True)
+    amount = models.CharField(max_length=10)
+    status = models.CharField(max_length=15, choices=STATUS, default=1)
+    receipt_no = models.CharField(max_length=200, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    ip = models.CharField(max_length=200, blank=True, null=True)
+
+    def __unicode__(self):
+        return f"{self.transaction_no}"

@@ -5,7 +5,14 @@
 {% block content%}
 
 <body>
- 
+ <style>.grid-item {
+    float: left;
+  }
+  
+  .grid-item img {
+    display: block;
+    max-width: 100%;
+  }</style>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -42,8 +49,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3">
-                    <!-- <div class="shop__sidebar">
-                        <div class="sidebar__categories">
+                    <div class="shop__sidebar">
+                        <!-- <div class="sidebar__categories">
                             <div class="section-title">
                                 <h4>Categories</h4>
                             </div>
@@ -136,14 +143,14 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="sidebar__filter">
                             <div class="section-title">
                                 <h4>Shop by price</h4>
                             </div>
                             <div class="filter-range-wrap">
                                 <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="33" data-max="99"></div>
+                                data-min="0" data-max="3000"></div>
                                 <div class="range-slider">
                                     <div class="price-input">
                                         <p>Price:</p>
@@ -154,7 +161,7 @@
                             </div>
                             <a href="#">Filter</a>
                         </div>
-                        <div class="sidebar__sizes">
+                        <!-- <div class="sidebar__sizes">
                             <div class="section-title">
                                 <h4>Shop by size</h4>
                             </div>
@@ -200,10 +207,10 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="sidebar__color">
                             <div class="section-title">
-                                <h4>Shop by size</h4>
+                                <h4>Shop by Color</h4>
                             </div>
                             <div class="size__list color__list">
                                 <label for="black">
@@ -248,17 +255,18 @@
                                 </label>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="col-lg-9 col-md-9">
-                    <div class="row">
+                    <div class="row" data-masonry='{"percentPosition": true }'>
+                      
                         {% for items in object_list %}
                         
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-md-6" >
                             <a href="{{ items.get_absolute_url }}">
-                            <div class="product__item">
+                            <div class="product__item" >
                                
-                                <div class="product__item__pic set-bg" data-setbg="{% static 'img/shop/shop-1.jpg' %}">
+                                <div class="product__item__pic set-bg" data-setbg="{% static 'img/shop/shop-1.jpg' %}" style="border-radius: 20px;">
                            
                                     <div class="label new">New</div>
                                     <ul class="product__hover">
@@ -398,6 +406,19 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/jquery.nicescroll.min.js"></script>
     <script src="js/main.js"></script>
+
+<!-- <script>var $grid = $('.grid').masonry({
+    itemSelector: '.grid-item',
+    percentPosition: true,
+    columnWidth: '.grid-sizer'
+  });
+  
+  // layout Masonry after each image loads
+  $grid.imagesLoaded().progress( function() {
+    $grid.masonry();
+  });  </script> -->
+
+
 </body>
 
 {%endblock%}

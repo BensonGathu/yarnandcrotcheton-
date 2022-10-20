@@ -1,5 +1,6 @@
 from email import message
 from multiprocessing import context
+from unicodedata import category
 from django.shortcuts import render,redirect, get_object_or_404
 from django.views import View
 from pytz import timezone
@@ -14,6 +15,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+import requests
+from django_daraja.mpesa.core import MpesaClient
+from django.http import HttpResponse
+from django.urls import reverse
+from .serializers import MpesaCheckoutSerializer
+# from .util import MpesaGateWay
 
 
 
@@ -109,18 +116,34 @@ class checkoutview(LoginRequiredMixin,View):
             messages.error(self.request,"You do not have an active order")
             return redirect("commerce:checkout")
 
-def string_arts(request):
+class PaymentView(View):
+    def get(self,*args,**kwargs):
+        return render(self.request,"payment.html")
+
+class stringArtsView(ListView):
+    model=Item
+    queryset  = Item.objects.filter(category='String Art')
     context = {
 
     }
-    return render(request,"string_arts.html")
+    template_name="string_arts.html"
 
 
-def crotchets(request):
+class crotchetsView(ListView):
+    model = Item
+    queryset=Item.objects.filter(category='Crotchet Products') | Item.objects.filter(category='Crotchet Bag')
+    
+
+    template_name ="crotchets.html"
+
+
+class yarnAccessoriesView(ListView):
+    model=Item
+    queryset  = Item.objects.filter(category='Yarn & Accessories')
     context = {
 
     }
-    return render(request,"crotchets.html")
+    template_name="yarnaccessories.html"
 
 @login_required
 def orders(request):
@@ -129,6 +152,7 @@ def orders(request):
     }
 
     return render(request,"orders.html")
+
 
 #userRegistration page
 def signuppage(request):
@@ -171,7 +195,7 @@ def logoutUser(request):
     current_user = request.user
     logout(request)
     messages.info(
-        request, 'You have logged out.')
+        request, 'You have logged out.')  
     # if current_user.is_admin:
     return redirect('"commerce:index')
     
@@ -264,7 +288,77 @@ def remove_single_item_from_cart(request,slug):
         return redirect("commerce:shop-cart")
     return redirect("commerce:shop-cart")
 
+# def payment(request):
+#     url = "https://sandbox.safaricom.co.ke/oauth/v1/generate"
+#     querystring = {"grant_type":"client_credentials"}
+#     payload = ""
+#     headers = {
+#     "Authorization": "Basic SWZPREdqdkdYM0FjWkFTcTdSa1RWZ2FTSklNY001RGQ6WUp4ZVcxMTZaV0dGNFIzaA=="
+#     }
+#     response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+#     print(response.text)
 
+
+
+def mpesaPayment(request):
+    cl = MpesaClient()
+    print(cl)
+    # Use a Safaricom phone number that you have access to, for you to be able to view the prompt.
+    phone_number = '0703446950'
+    amount = 1
+    account_reference = 'reference'
+    transaction_desc = 'Description'
+    callback_url = 'https://darajambili.herokuapp.com/express-payment'
+    response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
+    return HttpResponse(response)    
+
+def stk_push_callback(request):
+        data = request.body
+        # You can do whatever you want with the notification received from MPESA here. 
+
+
+#admin Dashboard page
+def adminDash(request):
+    context = {
+
+    }
+    return render(request,'adminDash/index.html',context)
+
+
+#admin all products page
+def admin_allproducts(request):
+    context = {
+
+    }
+    return render(request,'adminDash/admin_allproducts.html',context)
 
     
+#admin crotchetbags page
+def admin_crotchetbags(request):
+    context = {
 
+    }
+    return render(request,'adminDash/admin_crotchetbags.html',context)
+
+
+#admin crotchetproducts page
+def admin_crotchetproducts(request):
+    context = {
+
+    }
+    return render(request,'adminDash/admin_crotchetproducts.html',context)
+
+
+#admin string arts page
+def admin_strings(request):
+    context = {
+
+    }
+    return render(request,'adminDash/admin_strings.html',context)
+
+#admin yarn and accessories page
+def admin_yarn(request):
+    context = {
+
+    }
+    return render(request,'adminDash/admin_yarn.html',context)
