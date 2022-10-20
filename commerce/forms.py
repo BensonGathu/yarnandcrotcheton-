@@ -7,6 +7,10 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from bootstrap_modal_forms.forms import BSModalModelForm
+
+
+from commerce.models import Item
 # from django_countries.widgets import CountrySelectWidget
 # from django_countries.fields import CountryField
 
@@ -42,4 +46,23 @@ class CheckoutForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={"class":'form-control my-2', 'placeholder':'Email','type':'text'}),required=False)
     save_info = forms.BooleanField(widget=forms.CheckboxInput(),required=False)
     payment_option = forms.ChoiceField(widget=forms.RadioSelect(),choices=PAYMENT_CHOICES)
-    order_notes = forms.CharField(widget=forms.TextInput(attrs={"class":'form-control my-2', 'placeholder':' Note about your order, e.g, special note for delivery','type':'text'}),required=False)                                                                                                                                     
+    order_notes = forms.CharField(widget=forms.TextInput(attrs={"class":'form-control my-2', 'placeholder':' Note about your order, e.g, special note for delivery','type':'text'}),required=False)
+
+
+class AddProductForm(BSModalModelForm):
+    title = forms.CharField()
+    desc = forms.Textarea()
+    price = forms.FloatField()
+    discounted_price = forms.FloatField()
+    category = forms.ChoiceField()
+    image = forms.ImageField()
+    image1 = forms.ImageField()
+    image2 = forms.ImageField()
+    image3 = forms.ImageField()
+    image4 = forms.ImageField()
+    label = forms.ChoiceField()
+
+    class Meta:
+        model = Item
+        fields = ['title','desc','price','discounted_price','category','image','image1','image2','image3','image4','label']
+

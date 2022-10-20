@@ -70,6 +70,10 @@ class Item(models.Model):
     def get_remove_from_cart_url(self):
         return f"/remove-from-cart/{self.slug}"
 
+    def get_delete_item_url(self):
+        return f"/delete_product/{self.slug}"
+    
+
 class OrderItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     item = models.ForeignKey(Item,on_delete=models.CASCADE)

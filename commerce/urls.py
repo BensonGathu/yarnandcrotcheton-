@@ -4,7 +4,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import index, productDetailsView,shop_cart,remove_from_cart,shopView,orders,add_to_cart,signuppage,loginpage,logoutUser,crotchetsView,remove_single_item_from_cart,checkoutview,stk_push_callback,mpesaPayment,PaymentView,stringArtsView,yarnAccessoriesView,adminDash,admin_allproducts,admin_crotchetbags,admin_crotchetproducts,admin_strings,admin_yarn
+from .views import index, productDetailsView,shop_cart,remove_from_cart,shopView,orders,add_to_cart,signuppage,loginpage,logoutUser,crotchetsView,remove_single_item_from_cart,checkoutview,stk_push_callback,mpesaPayment,PaymentView,stringArtsView,yarnAccessoriesView,adminDash,admin_allproductsView,admin_crotchetbagsView,admin_crotchetproductsView,admin_stringsView,admin_yarnView,delete_product,AddProductView
 app_name = 'commerce'
 urlpatterns = [ 
     
@@ -27,11 +27,13 @@ urlpatterns = [
     path('mpesa/', mpesaPayment, name='mpesa'),
     path('payment/<payment_option>/',PaymentView.as_view(),name="payment"),
     path('adminDash/',adminDash,name="admin-dashboard"),
-    path('adminproducts/',admin_allproducts,name="admin_allproducts"),
-    path('admincrotchetbags/',admin_crotchetbags,name="admin_crotchetbags"),
-    path('admincrotchetproducts/',admin_crotchetproducts,name="admin_crotchetproducts"),
-    path('adminstringarts/',admin_strings,name="admin_stringarts"),
-    path('adminyarn/',admin_yarn,name="admin_yarn"),
+    path('adminproducts/',admin_allproductsView.as_view(),name="admin_allproducts"),
+    path('admincrotchetbags/',admin_crotchetbagsView.as_view(),name="admin_crotchetbags"),
+    path('admincrotchetproducts/',admin_crotchetproductsView.as_view(),name="admin_crotchetproducts"),
+    path('adminstringarts/',admin_stringsView.as_view(),name="admin_stringarts"),
+    path('adminyarn/',admin_yarnView.as_view(),name="admin_yarn"),
+    path("delete_product/<slug>/",delete_product,name="delete_product"),
+    path("addProduct/",AddProductView.as_view(),name="add_product"),
 
 
 ] 

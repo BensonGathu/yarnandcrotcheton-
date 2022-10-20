@@ -7,7 +7,7 @@ from pytz import timezone
 from requests import request
 from .models import Item,Order,OrderItem,ShippingAddress
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CreateUserForm,CheckoutForm
+from .forms import CreateUserForm,CheckoutForm,AddProductForm
 from django.views.generic import ListView,DetailView
 from datetime import datetime
 from django.contrib import messages
@@ -18,8 +18,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
 from django_daraja.mpesa.core import MpesaClient
 from django.http import HttpResponse
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from .serializers import MpesaCheckoutSerializer
+from bootstrap_modal_forms.generic import BSModalCreateView
+
 # from .util import MpesaGateWay
 
 
@@ -288,6 +290,19 @@ def remove_single_item_from_cart(request,slug):
         return redirect("commerce:shop-cart")
     return redirect("commerce:shop-cart")
 
+
+#delete an item from the database
+def delete_product(request,slug):
+    item = get_object_or_404(Item,slug=slug)
+    print(item)
+    if item:
+        item.delete()
+        messages.success(request,"Item Deleted successfully")
+        return redirect("commerce:admin-dashboard")
+    else:
+        messages.warning(request,"Item does not exist")
+        return redirect("commerce:admin-dashboard")
+
 # def payment(request):
 #     url = "https://sandbox.safaricom.co.ke/oauth/v1/generate"
 #     querystring = {"grant_type":"client_credentials"}
@@ -326,39 +341,67 @@ def adminDash(request):
 
 
 #admin all products page
-def admin_allproducts(request):
-    context = {
+class admin_allproductsView(View):
+    def get(self,*args,**kwargs):
+        form = AddProductForm()
+        object_list = Item.objects.all()
+        context = {
+            "form":form,
+            "object_list":object_list
+        }
 
-    }
-    return render(request,'adminDash/admin_allproducts.html',context)
+        return render(self.request, "adminDash/admin_allproducts.html",context)
+
+    def post(self,*args,**kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        pass
+        model=Item
+        context = {
+
+        }
+        template_name=  'adminDash/admin_allproducts.html'
+
+
 
     
 #admin crotchetbags page
-def admin_crotchetbags(request):
+class admin_crotchetbagsView(ListView):
+    model=Item
     context = {
 
     }
-    return render(request,'adminDash/admin_crotchetbags.html',context)
+    template_name =  'adminDash/admin_crotchetbags.html'
 
 
 #admin crotchetproducts page
-def admin_crotchetproducts(request):
+class admin_crotchetproductsView(ListView):
+    model=Item
     context = {
 
     }
-    return render(request,'adminDash/admin_crotchetproducts.html',context)
+    template_name = 'adminDash/admin_crotchetproducts.html'
 
 
 #admin string arts page
-def admin_strings(request):
+class admin_stringsView(ListView):
+    model=Item
     context = {
 
     }
-    return render(request,'adminDash/admin_strings.html',context)
+    template_name = 'adminDash/admin_strings.html'
 
 #admin yarn and accessories page
-def admin_yarn(request):
+class admin_yarnView(ListView):
+    model=Item
     context = {
 
     }
-    return render(request,'adminDash/admin_yarn.html',context)
+    template_name = 'adminDash/admin_yarn.html'
+
+
+
+class AddProductView(BSModalCreateView):
+    template_name = 'examples/create_book.html'
+    form_class = AddProductForm
+    success_message = 'Success: Book was created.'
+    success_url = reverse_lazy('index')
