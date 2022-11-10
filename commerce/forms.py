@@ -2,15 +2,18 @@ from dataclasses import field
 from http.client import PAYMENT_REQUIRED
 from itertools import count
 from pyexpat import model
+from sre_constants import CATEGORY
 from tkinter import Widget
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from bootstrap_modal_forms.forms import BSModalModelForm
+import phonenumbers
 
 
-from commerce.models import Item
+
+from commerce.models import CATEGORY_CHOICES, Item
 # from django_countries.widgets import CountrySelectWidget
 # from django_countries.fields import CountryField
 
@@ -49,20 +52,38 @@ class CheckoutForm(forms.Form):
     order_notes = forms.CharField(widget=forms.TextInput(attrs={"class":'form-control my-2', 'placeholder':' Note about your order, e.g, special note for delivery','type':'text'}),required=False)
 
 
-class AddProductForm(BSModalModelForm):
-    title = forms.CharField()
-    desc = forms.Textarea()
-    price = forms.FloatField()
-    discounted_price = forms.FloatField()
-    category = forms.ChoiceField()
-    image = forms.ImageField()
-    image1 = forms.ImageField()
-    image2 = forms.ImageField()
-    image3 = forms.ImageField()
-    image4 = forms.ImageField()
-    label = forms.ChoiceField()
+
+CATEGORY_CHOICES = (
+    ("String Art","String Art"),
+    ("Crotchet Products","Crotchet Products"),
+    ("Crotchet Bag","Crotchet Bag"),
+    ("Yarn & Accessories","Yarn & Accessories")
+
+)
+LABEL_CHOICES = (
+    ("P","primary"),
+    ("S","secondary"),
+    ("D","danger")
+)
+class AddProductForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput(attrs={"class":'form-control my-2', 'placeholder':'Product name','type':'text'}))
+    desc = forms.CharField(widget=forms.Textarea(attrs={"class":'form-control my-2', 'placeholder':'Product Description','type':'text','rows':3,'cols':45}))
+    price = forms.FloatField(widget=forms.NumberInput(attrs={"class":'form-control my-2', 'placeholder':'price','type':'text'}))
+    discounted_price = forms.FloatField(widget=forms.NumberInput(attrs={"class":'form-control my-2', 'placeholder':'discounted price','type':'text','rows':4,"cols":"4"}))
+    category = forms.ChoiceField(label='select category', choices=CATEGORY_CHOICES, widget=forms.Select(attrs={"class": "form-control"}))
+    label = forms.ChoiceField(label='select label', choices=LABEL_CHOICES, widget=forms.Select(attrs={"class": "form-control"}))
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={"class": "form-control"}))
+    image1 = forms.ImageField(widget=forms.FileInput(attrs={"class": "form-control"}),required=False)
+    image2 = forms.ImageField(widget=forms.FileInput(attrs={"class": "form-control"}),required=False)
+    image3 = forms.ImageField(widget=forms.FileInput(attrs={"class": "form-control"}),required=False)
+    image4 = forms.ImageField(widget=forms.FileInput(attrs={"class": "form-control"}),required=False)
+   
 
     class Meta:
         model = Item
         fields = ['title','desc','price','discounted_price','category','image','image1','image2','image3','image4','label']
 
+
+class PaymentForm(forms.Form):
+    phonenumber = forms.IntegerField(widget=forms.NumberInput(attrs={"class":'form-control my-2', 'placeholder':'Enter Number to pay','type':'text'}))
+    amount = forms.FloatField(widget=forms.NumberInput(attrs={"class":'form-control my-2', 'placeholder':'price','type':'text'}))

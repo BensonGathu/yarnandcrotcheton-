@@ -24,8 +24,8 @@
     <section class="categories">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-5 p-0 crotchet-products">
-                    <div class="categories__item categories__large__item set-bg "
+                <div class="col-lg-5 col-12 p-0 crotchet-products ">
+                    <div class="categories__item categories__large__item set-bg  "
                     data-setbg="{% static 'img/categories/cproject.png'%}" style="border-radius: 20px;" >
                     <div class="categories__text">
                         <h1>Crotchet Products</h1>
@@ -43,10 +43,10 @@
                 </div> -->
             </div>
             
-            <div class="col-lg-7 string-art-group">
+            <div class="col-lg-7 string-art-group ">
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 p-0" >
-                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/arts.png' %}" style="border-radius: 20px; ">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-6 p-0" >
+                        <div class="categories__item set-bg " data-setbg="{% static 'img/categories/arts.png' %}" style="border-radius: 20px; ">
                             <div class="categories__text">
                                 <h4>String Art</h4>
                                 <p>358 items</p>
@@ -54,8 +54,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 p-0 crotchet-bags" >
-                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/bagss.png' %}" style="border-radius: 20px; ">
+                    <div class="col-lg-8 col-md-8 col-6 col-sm-8 p-0 crotchet-bags " >
+                        <div class="categories__item set-bg " data-setbg="{% static 'img/categories/bagss.png' %}" style="border-radius: 20px; ">
                             <div class="categories__text">
                                 <h4>Crotchet Bags</h4>
                                 <p>273 items</p>
@@ -63,8 +63,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0 yarn-accessories">
-                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/acce.png' %}" style="border-radius: 20px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0 yarn-accessories ">
+                        <div class="categories__item set-bg smd" data-setbg="{% static 'img/categories/acce.png' %}" style="border-radius: 20px;">
                             <div class="categories__text">
                                 <h4>Yarn & Accessories</h4>
                                 <p>159 items</p>
@@ -72,8 +72,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 p-0 all-accessories">
-                        <div class="categories__item set-bg" data-setbg="{% static 'img/categories/lastacc.png' %}"style="border-radius: 20px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0 all-accessories ">
+                        <div class="categories__item set-bg smd" data-setbg="{% static 'img/categories/lastacc.png' %}"style="border-radius: 20px;">
                             <div class="categories__text">
                                 <h4>Accessories</h4>
                                 <p>792 items</p>
@@ -95,7 +95,7 @@
         <div class="row">
             <div class="col-lg-4 col-md-4">
                 <div class="section-title">
-                    <h4>New product</h4>
+                    <h4>New products</h4>
                 </div>
             </div>
             <div class="col-lg-8 col-md-8">
@@ -103,7 +103,7 @@
                     <li class="active" data-filter="*">All</li>
                     <li data-filter=".string-art">String Art</li>
                     <li data-filter=".Crotchet">Crotchet</li>
-                    
+                    <li data-filter=".bag">Bag</li>
                     <li data-filter=".accessories">Accessories</li>
                     <!-- <li data-filter=".kid">Kid’s</li>
                     <li data-filter=".cosmetic">Cosmetics</li> -->
@@ -111,18 +111,30 @@
             </div>
         </div>
         <div class="row property__gallery">
-            <div class="col-lg-3 col-md-4 col-sm-6 mix string-art">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-6 mix string-art">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}" style="border-radius: 20px;">
-                        <div class="label new">New</div>
+                    <a href={{new_art.get_absolute_url }}>
+                   
+                    <div class="product__item__pic set-bg " data-setbg="{{new_art.image.url}}" style="border-radius: 20px;">
+                        <div class="label new" style="border-radius: 10px;">New</div>
                         <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            
+                            <li><a href={{new_art.get_absolute_url }}
+                                 class="image-popup"><span class="arrow_expand"></span></a></li>
                             <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                             <li><a href="#"><span class="icon_bag_alt"></span></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="#">Buttons tweed blazer</a></h6>
+                        <h6><a href={{new_art.get_absolute_url }}>
+                            {{new_art.title}}</a></h6>
+                            <div class="product__price"> Ksh
+                                {%if new_art.discount_price %}
+                                {{new_art.discount_price}}
+                                {%else%}
+                                {{new_art.price}}
+                                {%endif%}
+                            </div>
                         <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -130,13 +142,55 @@
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                         </div>
-                        <div class="product__price">$ 59.0</div>
+                   
                     </div>
+                    </a>
                 </div>
+               
             </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix Crotchet">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-6 mix Crotchet">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-2.jpg' %}" style="border-radius: 20px;">
+                    <a href={{new_crotchets.get_absolute_url }}>
+                    
+                    <div class="product__item__pic set-bg new_product_image" data-setbg="{{new_crotchets.image.url}}" style="border-radius: 20px;">
+                        <div class="label new" style="border-radius: 10px;">New</div>
+                        
+                        <ul class="product__hover">
+                           
+                            <li><a href="{% static 'img/product/product-2.jpg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href={{new_crotchets.get_absolute_url }}>
+                            {{new_crotchets.title}}</a></h6>
+                            <div class="product__price"> Ksh
+                                {%if new_crotchets.discount_price %}
+                                {{new_crotchets.discount_price}}
+                                {%else%}
+                                {{new_crotchets.price}}
+                                {%endif%}
+                            </div>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                      
+                    </div>
+                </a>
+                </div>
+            
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 col-xs-6 mix bag">
+                <div class="product__item">
+                    <a href={{new_art.get_absolute_url }}>
+                    <div class="product__item__pic set-bg new_product_image" data-setbg="{{new_bag.image.url}}" style="border-radius: 20px;">
+                        <div class="label new" style="border-radius: 10px;">New</div>
                         <ul class="product__hover">
                             <li><a href="{% static 'img/product/product-2.jpg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
                             <li><a href="#"><span class="icon_heart_alt"></span></a></li>
@@ -144,7 +198,15 @@
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="#">Flowy striped skirt</a></h6>
+                        <h6><a href={{new_art.get_absolute_url }}>
+                            {{new_bag.title}}</a></h6>
+                            <div class="product__price"> Ksh
+                                {%if new_art.discount_price %}
+                                {{new_art.discount_price}}
+                                {%else%}
+                                {{new_art.price}}
+                                {%endif%}
+                            </div>
                         <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -152,14 +214,18 @@
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                         </div>
-                        <div class="product__price">$ 49.0</div>
+                    
                     </div>
+                    </a>
                 </div>
+            
             </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix  accessories">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 col-xs-6 mix  accessories">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-3.jpg'%}" style="border-radius: 20px;">
-                        <div class="label stockout">out of stock</div>
+                    <a href={{new_acc.get_absolute_url }}>
+                    <div class="product__item__pic set-bg new_product_image" data-setbg="{{new_acc.image.url}}" style="border-radius: 20px;">
+                        <!-- <div class="label stockout">out of stock</div> -->
+                        <div class="label new" style="border-radius: 10px;">New</div>
                         <ul class="product__hover">
                             <li><a href="{% static 'img/product/product-3.jpg'%}" class="image-popup"><span class="arrow_expand"></span></a></li>
                             <li><a href="#"><span class="icon_heart_alt"></span></a></li>
@@ -167,7 +233,15 @@
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="#">Cotton T-Shirt</a></h6>
+                        <h6><a href={{new_acc.get_absolute_url }}>
+                            {{new_acc.title}}</a></h6>
+                            <div class="product__price"> Ksh
+                                {%if new_acc.discount_price %}
+                                {{new_acc.discount_price}}
+                                {%else%}
+                                {{new_acc.price}}
+                                {%endif%}
+                            </div>
                         <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -175,130 +249,22 @@
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                         </div>
-                        <div class="product__price">$ 59.0</div>
+                     
                     </div>
+                </a>
                 </div>
             </div>
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 mix cosmetic">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-4.jpg'%}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-4.jpg'%}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Slim striped pocket shirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 59.0</div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 mix kid">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-5.jpg'%}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-5.jpg'%}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Fit micro corduroy shirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 59.0</div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-6.jpg'%}">
-                        <div class="label sale">Sale</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-6.jpg'%}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Tropical Kimono</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-7.jpg'%}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-7.jpg'%}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Contrasting sunglasses</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 59.0</div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-8.jpg'%}">
-                        <div class="label">Sale</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-8.jpg'%}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Water resistant backpack</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
-                    </div>
-                </div>
-            </div> -->
+            
         </div>
     </div>
 </section>
 <!-- Product Section End -->
 
 <!-- Banner Section Begin -->
-<section class="banner set-bg" data-setbg="{% static 'img/banner/banner-1.jpg'%}">
-    <div class="container">
+
+<section class="banner set-bg" data-setbg="{% static 'img/banner/banner.png' %}">
+    <div class="container ">
+        <!-- <iframe src="https://embed.lottiefiles.com/animation/110462"></iframe> -->
         <div class="row">
             <div class="col-xl-7 col-lg-8 m-auto">
                 <div class="banner__slider owl-carousel">
@@ -352,7 +318,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                     <div class="trend__item">
@@ -368,7 +334,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                     <div class="trend__item">
@@ -384,7 +350,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                 </div>
@@ -407,7 +373,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                     <div class="trend__item">
@@ -423,7 +389,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                     <div class="trend__item">
@@ -439,7 +405,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                 </div>
@@ -462,7 +428,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                     <div class="trend__item">
@@ -478,7 +444,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                     <div class="trend__item">
@@ -494,7 +460,7 @@ Trend Section Begin -->
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price">Kes 59.0</div>
                         </div>
                     </div>
                 </div>
@@ -505,7 +471,7 @@ Trend Section Begin -->
 <!-- Trend Section End -->
 
 <!-- Discount Section Begin -->
-<section class="discount">
+<!-- <section class="discount">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 p-0">
@@ -543,7 +509,7 @@ Trend Section Begin -->
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <!-- Discount Section End -->
 
 <!-- Services Section Begin -->
@@ -554,14 +520,14 @@ Trend Section Begin -->
                 <div class="services__item">
                     <i class="fa fa-car"></i>
                     <h6>Free Shipping</h6>
-                    <p>For all oder over $99</p>
+                    <p>For all orders over Kes 5000</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="services__item">
                     <i class="fa fa-money"></i>
-                    <h6>Money Back Guarantee</h6>
-                    <p>If good have Problems</p>
+                    <h6>Get Customized Products</h6>
+                    <p>There's something for everyone </p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6">
@@ -584,60 +550,7 @@ Trend Section Begin -->
 <!-- Services Section End -->
 
 <!-- Instagram Begin -->
-<div class="instagram">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-1.jpg'%}" style="border-radius: 20px;">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-2.jpg'%}" style="border-radius: 20px;">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-3.jpg'%}" style="border-radius: 20px;"> 
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-4.jpg'%}" style="border-radius: 20px;">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-5.jpg'%}" style="border-radius: 20px;">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-1">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-6.jpg'%}" style="border-radius: 20px;">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{% include "gallery.html" %}
 <!-- Instagram End -->
 
 <!-- Footer Section Begin --> 

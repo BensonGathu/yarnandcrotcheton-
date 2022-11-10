@@ -123,18 +123,20 @@
                                     <ul>
                                         <li>
                                             <span class="top__text">Product</span>
+                                            <!-- <span class="top__text">Quantity</span> -->
                                             <span class="top__text__right">Total</span>
                                         </li>
-                                        <li>01. Chain buck bag <span>$ 300.0</span></li>
-                                        <li>02. Zip-pockets pebbled<br /> tote briefcase <span>$ 170.0</span></li>
-                                        <li>03. Black jean <span>$ 170.0</span></li>
-                                        <li>04. Cotton shirt <span>$ 110.0</span></li>
+                                        {% for order_item in order.items.all %}
+                                        <li>{{order_item.item.title}} <span>Ksh  
+                                            {{ order_item.get_final_total }}</span></li>
+                                            {% endfor %}
                                     </ul>
+                                    
                                 </div>
                                 <div class="checkout__order__total">
                                     <ul>
                                       
-                                        <li>Total <span>$ 750.0</span></li>
+                                        <li>Total <span>Kes {{order.get_order_total}}</span></li>
                                     </ul>
                                 </div>
                                 <div class="checkout__order__widget">

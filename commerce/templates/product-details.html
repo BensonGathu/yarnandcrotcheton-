@@ -1,119 +1,154 @@
-{% extends 'base.html' %}
-{% load static %}
-
-
-{% block content%}
-
+{% extends 'base.html' %} {% load products_details_template_tags %}
+{% load static %} {% block content%}
+<link rel="stylesheet" href=" {% static 'css/styless.css' %}" type="text/css" />
 <body>
-    <style>
+  <!-- Page Preloder -->
+  <div id="preloder">
+    <div class="loader"></div>
+  </div>
 
-    </style>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
+  <!-- Offcanvas Menu Begin -->
+  <div class="offcanvas-menu-overlay"></div>
+  {% include "wrapper.html" %}
 
-    <!-- Offcanvas Menu Begin -->
-    <div class="offcanvas-menu-overlay"></div>
-    {% include "wrapper.html" %}
-        
-    <!-- Offcanvas Menu End -->
+  <!-- Offcanvas Menu End -->
 
-    <!-- Header Section Begin -->
+  <!-- Header Section Begin -->
 
-    <!-- Header Section End -->
+  <!-- Header Section End -->
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="{% url 'commerce:index' %}"><i class="fa fa-home"></i> Home</a>
-                        <a href="#">{{object.category}} </a>
-                        <span>{{object.title}}</span>
-                    </div>
-                </div>
-            </div>
+  <!-- Breadcrumb Begin -->
+  <div class="breadcrumb-option">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="breadcrumb__links">
+            <a href="{% url 'commerce:index' %}"
+              ><i class="fa fa-home"></i> Home</a
+            >
+            <a href="#">{{object.category}} </a>
+            <span>{{object.title}}</span>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- Breadcrumb End -->
+  </div>
+  <!-- Breadcrumb End -->
 
-    <!-- Product Details Section Begin -->
-    <section class="product-details spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="product__details__pic">
-                 
-                        <div class="product__details__pic__left product__thumb nice-scroll">
-                            
-                            <a class="pt active" href="#product-1">
-                                <img src="{{object.image.url}}" alt="">
-                            </a>
-                           
-                            <a class="pt" href="#product-2">
-                                <img src="{{object.image1.url}}" alt="">
-                            </a>
-                            <a class="pt" href="#product-3">
-                                <img src="{{object.image2.url}}" alt="">
-                            </a>
-                            <a class="pt" href="#product-4">
-                                <img src="{{object.image3.url}}" alt="">
-                            </a>
-                            <a class="pt" href="#product-4">
-                                <img src="{{object.image4.url}}" alt="">
-                            </a>
-                        </div>
-                        <div class="product__details__slider__content">
-                            <div class="product__details__pic__slider owl-carousel">
-                                <img data-hash="product-1" class="product__big__img" src="{{object.image.url}}" alt="">
-                                <img data-hash="product-2" class="product__big__img" src="{{object.image1.url}}" alt="">
-                                <img data-hash="product-3" class="product__big__img" src="{{object.image2.url}}" alt="">
-                                <img data-hash="product-4" class="product__big__img" src="{{object.image3.url}}" alt="">
-                                <img data-hash="product-4" class="product__big__img" src="{{object.image4.url}}" alt="">
+  <!-- Product Details Section Begin -->
+  <section class="product-details spad">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-4 col-sm-4 col-12 col-xs-6">
+          <div class="product__details__pic">
+            <div class="product__details__pic__left product__thumb nice-scroll">
+              <a class="pt active" href="#product-1">
+                <img
+                  src="{{object.image.url}}"
+                  alt=""
+                  style="border-radius: 10%"
+                />
+              </a>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="product__details__text">
-                        <h3>{{object.title}}<span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <span>( 138 reviews )</span>
-                        </div>
-                        <div class="product__details__price">Ksh 
-                            {%if object.discount_price %}
-                            {{object.discount_price}}
-                            <span><del>{{object.price}}</del></span>
-                            {%else%}
-                            {{object.price}}
-                            {%endif%}</div>
-                        <p>{{object.desc}}.</p>
-                        <div class="product__details__button">
-                            <!-- <div class="quantity">
-                                <span>Quantity:</span>
-                                <div class="pro-qt">
+              <a class="pt" href="#product-2">
+                <img
+                  src="{{object.image1.url}}"
+                  alt=""
+                  style="border-radius: 10%"
+                />
+              </a>
+              <a class="pt" href="#product-3">
+                <img
+                  src="{{object.image2.url}}"
+                  alt=""
+                  style="border-radius: 10%"
+                />
+              </a>
+              <a class="pt" href="#product-4">
+                <img
+                  src="{{object.image3.url}}"
+                  alt=""
+                  style="border-radius: 10%"
+                />
+              </a>
+              <a class="pt" href="#product-4">
+                <img
+                  src="{{object.image4.url}}"
+                  alt=""
+                  style="border-radius: 10%"
+                />
+              </a>
+            </div>
+            <div class="product__details__slider__content">
+              <div class="product__details__pic__slider owl-carousel">
+                <img
+                  data-hash="product-1"
+                  class="product__big__img"
+                  src="{{object.image.url}}"
+                  alt=""
+                />
+                <img
+                  data-hash="product-2"
+                  class="product__big__img"
+                  src="{{object.image1.url}}"
+                  alt=""
+                />
+                <img
+                  data-hash="product-3"
+                  class="product__big__img"
+                  src="{{object.image2.url}}"
+                  alt=""
+                />
+                <img
+                  data-hash="product-4"
+                  class="product__big__img"
+                  src="{{object.image3.url}}"
+                  alt=""
+                />
+                <img
+                  data-hash="product-4"
+                  class="product__big__img"
+                  src="{{object.image4.url}}"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-4 col-sm-4 col-12 col-xs-6" lg>
+          <div class="product__details__text">
+            <h3>{{object.title}}<span>{{object.desc}}</span></h3>
+            <div class="rating">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <span>( 138 reviews )</span>
+            </div>
+            <div class="product__details__price">
+              Ksh {%if object.discount_price %} {{object.discount_price}}
+              <span><del>{{object.price}}</del></span>
+              {%else%} {{object.price}} {%endif%}
+            </div>
 
-                                </div>
-                            </div> -->
-                            <a href="{{ object.get_item_to_cart_url }}" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+            <div class="product__details__button">
+              <a href="{{ object.get_item_to_cart_url }}" class="cart-btn"
+                ><span class="icon_bag_alt"></span> Add to cart</a
+              >
 
-                           
-                            <ul>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__details__widget">
-                            <ul>
-                                <li>
+              <ul>
+                <li>
+                  <a href="#"><span class="icon_heart_alt"></span></a>
+                </li>
+                <li>
+                  <a href="#"><span class="icon_adjust-horiz"></span></a>
+                </li>
+              </ul>
+            </div>
+            <div class="product__details__widget">
+              <ul>
+                <!-- <li>
                                     <span>Availability:</span>
                                     <div class="stock__checkbox">
                                         <label for="stockin">
@@ -122,295 +157,205 @@
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
-                                </li>
-                                <li>
-                                    <span>Available color:</span>
-                                    <div class="color__checkbox">
-                                        <label for="red">
-                                            <input type="radio" name="color__radio" id="red" checked>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label for="black">
-                                            <input type="radio" name="color__radio" id="black">
-                                            <span class="checkmark black-bg"></span>
-                                        </label>
-                                        <label for="grey">
-                                            <input type="radio" name="color__radio" id="grey">
-                                            <span class="checkmark grey-bg"></span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Available size:</span>
-                                    <div class="size__btn">
-                                        <label for="xs-btn" class="active">
-                                            <input type="radio" id="xs-btn">
-                                            xs
-                                        </label>
-                                        <label for="s-btn">
-                                            <input type="radio" id="s-btn">
-                                            s
-                                        </label>
-                                        <label for="m-btn">
-                                            <input type="radio" id="m-btn">
-                                            m
-                                        </label>
-                                        <label for="l-btn">
-                                            <input type="radio" id="l-btn">
-                                            l
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Promotions:</span>
-                                    <p>Free shipping</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <h6>Description</h6>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                    quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                    Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                    consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
-                            </div>
-                            <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <h6>Specification</h6>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                    quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                    Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                    consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
-                            </div>
-                            <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <h6>Reviews ( 2 )</h6>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                    quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                    Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                    consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                </li> -->
+                <li>
+                  <span>Available color:</span>
+                  <div class="color__checkbox">
+                    <label for="red">
+                      <input
+                        type="radio"
+                        name="color__radio"
+                        id="red"
+                        checked
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                    <label for="black">
+                      <input type="radio" name="color__radio" id="black" />
+                      <span class="checkmark black-bg"></span>
+                    </label>
+                    <label for="grey">
+                      <input type="radio" name="color__radio" id="grey" />
+                      <span class="checkmark grey-bg"></span>
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <span>Available size:</span>
+                  <div class="size__btn">
+                    <label for="xs-btn" class="active">
+                      <input type="radio" id="xs-btn" />
+                      xs
+                    </label>
+                    <label for="s-btn">
+                      <input type="radio" id="s-btn" />
+                      s
+                    </label>
+                    <label for="m-btn">
+                      <input type="radio" id="m-btn" />
+                      m
+                    </label>
+                    <label for="l-btn">
+                      <input type="radio" id="l-btn" />
+                      l
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <span>Promotions:</span>
+                  <p>Free shipping</p>
+                </li>
+              </ul>
             </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="related__title">
-                        <h5>RELATED PRODUCTS</h5>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-1.jpg">
-                            <div class="label new">New</div>
-                            <ul class="product__hover">
-                                <li><a href="img/product/related/rp-1.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Buttons tweed blazer</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-2.jpg">
-                            <ul class="product__hover">
-                                <li><a href="img/product/related/rp-2.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Flowy striped skirt</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 49.0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-3.jpg">
-                            <div class="label stockout">out of stock</div>
-                            <ul class="product__hover">
-                                <li><a href="img/product/related/rp-3.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Cotton T-Shirt</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-4.jpg">
-                            <ul class="product__hover">
-                                <li><a href="img/product/related/rp-4.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Slim striped pocket shirt</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </section>
-    <!-- Product Details Section End -->
-    
+        <div class="col-lg-12">
+          <div class="product__details__tab row">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  data-toggle="tab"
+                  href="#tabs-1"
+                  role="tab"
+                  >Description</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                  >Specification</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                  >Reviews ( 2 )</a
+                >
+              </li>
+            </ul>
+            <div
+              class="tab-content col-xs-12 col-12 col-xs-9 col-sm-9 col-md-9 col-lg-9"
+            >
+              <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                <h6>Description</h6>
+                <p>{{object.desc}}</p>
+              </div>
+              <div class="tab-pane" id="tabs-2" role="tabpanel">
+                <h6>Specification</h6>
+                <p>{{object.desc}}</p>
+              </div>
+              <div class="tab-pane" id="tabs-3" role="tabpanel">
+                <h6>Reviews ( 2 )</h6>
+                <p>
+                  Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
+                  odit aut loret fugit, sed quia consequuntur magni dolores eos
+                  qui ratione voluptatem sequi nesciunt loret. Neque porro lorem
+                  quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
+                  voluptatem quia voluptas sit aspernatur aut odit aut loret
+                  fugit, sed quia ipsu consequuntur magni dolores eos qui
+                  ratione voluptatem sequi nesciunt. Nulla consequat massa quis
+                  enim.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                  Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
+                  natoque penatibus et magnis dis parturient montes, nascetur
+                  ridiculus mus. Donec quam felis, ultricies nec, pellentesque
+                  eu, pretium quis, sem.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <div class="related__title">
+            <h5>RELATED PRODUCTS</h5>
+          </div>
+        </div>
 
-    <!-- Instagram Begin -->
-    <div class="instagram">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-1.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-2.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-3.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-4.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-5.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-6.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+     {% show_related_items object.category as related_items %}
+          
+     {% for items in  related_items%}
+           
+   
+     <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-4 " style="padding: 0;margin:0;">
+         <a href="{{ items.get_absolute_url }}">
+         <div class="product__item" >
+            
+             <!-- <div class="product__item__pic set-bg  related_items" data-setbg="{{items.image.url}}" style="border-radius: 20px; height: 280px; width: 180;">
+        
+                 <div class="label new">New</div>
+                 <ul class="product__hover">
+                     <li><a href="{{items.image.url}}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                     <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                     <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                 </ul>
+             </div> -->
+             <img src="{{items.image.url}}" data-setbg="{{items.image.url}}" alt="..." class="img-thumbnail" style="height: 190px; width:150px; border-radius: 20px;">
+        
+             <div class="product__item__text">
+                 <h6><b><a href="#">{{items.title}}</a></b></h6>
+                 <div class="product__price" > Ksh
+                     {%if items.discount_price %}
+                     {{items.discount_price}}
+                     {%else%}
+                     {{items.price}}
+                     {%endif%}
+                 </div>
+                 <div class="rating">
+                     <i class="fa fa-star"></i>
+                     <i class="fa fa-star"></i>
+                     <i class="fa fa-star"></i>
+                     <i class="fa fa-star"></i>
+                     <i class="fa fa-star"></i>
+                 </div>
+            
+             </div>
+             </a>
+         </div>
+         
+     </div>
+     {%endfor%}
+   
+
+
+  
+      </div>
     </div>
-    <!-- Instagram End -->
+  </section>
+  <!-- Product Details Section End -->
 
-    <!-- Footer Section Begin -->
- 
-    <!-- Footer Section End -->
+  <!-- Instagram Begin -->
+  {% include 'gallery.html'%}
+  <!-- Instagram End -->
 
-    <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
+  <!-- Footer Section Begin -->
+
+  <!-- Footer Section End -->
+
+  <!-- Search Begin -->
+  <div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+      <div class="search-close-switch">+</div>
+      <form class="search-model-form">
+        <input type="text" id="search-input" placeholder="Search here....." />
+      </form>
     </div>
-    <!-- Search End -->
+  </div>
+  <!-- Search End -->
 
-    <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/main.js"></script>
+  <!-- Js Plugins -->
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
+  <script src="js/mixitup.min.js"></script>
+  <script src="js/jquery.countdown.min.js"></script>
+  <script src="js/jquery.slicknav.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.nicescroll.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 {%endblock%}

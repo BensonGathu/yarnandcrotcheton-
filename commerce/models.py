@@ -42,10 +42,10 @@ class Item(models.Model):
     discount_price = models.FloatField(null=True, blank=True)
     category = models.CharField(choices=CATEGORY_CHOICES,max_length=100)
     image = models.ImageField(null=False,blank=False,upload_to="products")
-    image1 = models.ImageField(null=False,blank=False,upload_to="products")
-    image2 = models.ImageField(null=False,blank=False,upload_to="products")
-    image3 = models.ImageField(null=False,blank=False,upload_to="products")
-    image4 = models.ImageField(null=False,blank=False,upload_to="products")
+    image1 = models.ImageField(null=True, blank=True,upload_to="products")
+    image2 = models.ImageField(null=True, blank=True,upload_to="products")
+    image3 = models.ImageField(null=True, blank=True,upload_to="products")
+    image4 = models.ImageField(null=True, blank=True,upload_to="products")
     label = models.CharField(choices=LABEL_CHOICES,max_length=100)
     slug = models.SlugField(null=True, blank=True)
 
@@ -129,6 +129,7 @@ class ShippingAddress(models.Model):
     phone  =models.IntegerField()
     email =models.EmailField()
     order_notes=models.CharField(max_length=100)
+    payment_option = models.CharField(max_length=200)
 
     def __str__(self):
         return self.user.username
@@ -152,3 +153,8 @@ class PaymentTransaction(models.Model):
 
     def __unicode__(self):
         return f"{self.transaction_no}"
+
+
+
+class Galler(models.Model):
+    pass

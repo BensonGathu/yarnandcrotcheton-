@@ -4,7 +4,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import index, productDetailsView,shop_cart,remove_from_cart,shopView,orders,add_to_cart,signuppage,loginpage,logoutUser,crotchetsView,remove_single_item_from_cart,checkoutview,stk_push_callback,mpesaPayment,PaymentView,stringArtsView,yarnAccessoriesView,adminDash,admin_allproductsView,admin_crotchetbagsView,admin_crotchetproductsView,admin_stringsView,admin_yarnView,delete_product,AddProductView
+from .views import index, productDetailsView,shop_cart,remove_from_cart,shopView,orders,add_to_cart,signuppage,loginpage,logoutUser,crotchetsView,remove_single_item_from_cart,checkoutview,PaymentView,stringArtsView,yarnAccessoriesView,adminDash,admin_allproductsView,admin_crotchetbagsView,admin_crotchetproductsView,admin_stringsView,admin_yarnView,delete_product,AddProductView,crotchetBagsView,crotchetProductsView
 app_name = 'commerce'
 urlpatterns = [ 
     
@@ -17,14 +17,16 @@ urlpatterns = [
     path("remove_single_item_from_cart/<slug>/",remove_single_item_from_cart,name="remove_single_item_from_cart"),
     path("string-arts",stringArtsView.as_view(),name="string-arts"),
     path("crotchets",crotchetsView.as_view(),name="crotchets"),
+    path("crotchetBags",crotchetBagsView.as_view(),name="crotchetbags"),
+    path("crotchetProducts",crotchetProductsView.as_view(),name="crotchetproducts"),
     path("yarnaccessories",yarnAccessoriesView.as_view(),name="yarnaccessories"),
     path("checkout",checkoutview.as_view(),name="checkout"),
     path("orders",orders,name="orders"),
     path("signuppage",signuppage,name="signuppage"),
     path("loginpage",loginpage,name="loginpage"),
     path('logout/', logoutUser, name='logout'),
-    path('daraja/stk-push', stk_push_callback, name='mpesa_stk_push_callback'),
-    path('mpesa/', mpesaPayment, name='mpesa'),
+    # path('daraja/stk-push', stk_push_callback, name='mpesa_stk_push_callback'),
+    # path('mpesa/', mpesaPayment, name='mpesa'),
     path('payment/<payment_option>/',PaymentView.as_view(),name="payment"),
     path('adminDash/',adminDash,name="admin-dashboard"),
     path('adminproducts/',admin_allproductsView.as_view(),name="admin_allproducts"),

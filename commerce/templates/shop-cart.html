@@ -131,15 +131,19 @@
                             <li>Total <span>Ksh {{ order.get_order_total }}</span></li>
                             
                         </ul>
-                        <div class="row  ">
-                        <a href="{%url 'commerce:shop'%}" class="col-md-6"><button type="button" class="btn btn-primary ">Continue Shopping</button>
-                        </a>
-
-                        <a href="{%url 'commerce:checkout'%}" class="col-md-6"><button type="button" class="btn btn-warning ">Proceed to checkout</button>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                            
+                                <a href="{%url 'commerce:shop'%}" class="col-md-6"><button type="button" class="btn btn-primary ">Continue Shopping</button>
+                                </a>
+                            </div>
+                        <div class="col-sm-3 col-md-4">
+                            <a href="{%url 'commerce:checkout'%}" class="col-md-6"><button type="button" class="btn btn-warning ">Proceed to checkout</button></a>
                         </div>
                     </div>
-                </div>
+                    </div>
             </div>
+             
             {%endif%}
         </div>
         </div>

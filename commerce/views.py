@@ -1,13 +1,17 @@
+from ast import Pass
+from cProfile import label
 from email import message
 from multiprocessing import context
+from turtle import title
 from unicodedata import category
 from django.shortcuts import render,redirect, get_object_or_404
 from django.views import View
+import phonenumbers
 from pytz import timezone
 from requests import request
 from .models import Item,Order,OrderItem,ShippingAddress
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CreateUserForm,CheckoutForm,AddProductForm
+from .forms import CreateUserForm,CheckoutForm,AddProductForm,PaymentForm
 from django.views.generic import ListView,DetailView
 from datetime import datetime
 from django.contrib import messages
@@ -16,11 +20,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
-from django_daraja.mpesa.core import MpesaClient
+# from django_daraja.mpesa.core import MpesaClient
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
 from .serializers import MpesaCheckoutSerializer
 from bootstrap_modal_forms.generic import BSModalCreateView
+from .mpesa import lipa_na_mpesa
 
 # from .util import MpesaGateWay
 
@@ -30,9 +35,20 @@ from bootstrap_modal_forms.generic import BSModalCreateView
 
 #homepage
 def index(request):
+    items = Item.objects.all(),
     
+    new_crotchets = Item.objects.filter(category='Crotchet Products').first() 
+    new_bag = Item.objects.filter(category='Crotchet Bag').order_by('-id').first()
+    new_art = Item.objects.filter(category='String Art').order_by('-id').first()
+    new_acc = Item.objects.filter(category='Yarn & Accessories').order_by('-id').first()
+    print(new_bag)
     context = {
-        "items":Item.objects.all()
+        "items":items,
+        "new_crotchets": new_crotchets,
+        "new_art":new_art,
+        "new_acc":new_acc,
+        "new_bag":new_bag,
+
     }
     return render(request,'index.html',context)
  
@@ -41,18 +57,19 @@ def index(request):
 class shopView(ListView):
     paginate_by=10
     model = Item
+    queryset=Item.objects.all().order_by('-id')
    
     template_name = "shop.html"
 
 #individual products details
-class productDetailsView(LoginRequiredMixin ,DetailView):
+class productDetailsView(DetailView):
     model= Item
     template_name = "product-details.html"
     # images = Item.objects.get()
 
 
 
-class shop_cart(LoginRequiredMixin,View):
+class shop_cart(View):
     model=Order
     def get(self,*args,**kwargs):
         try:
@@ -67,18 +84,33 @@ class shop_cart(LoginRequiredMixin,View):
 
 
 class checkoutview(LoginRequiredMixin,View):
+    model=Order
     def get(self,*args,**kwargs):
-        form = CheckoutForm()
-        context = {
-        "form": form
-        }
-        return render(self.request, "checkout.html",context)
+        try:
+            order = Order.objects.get(user=self.request.user,ordered=False)
+            form = CheckoutForm()
+            context = {
+            "form": form,
+            "order":order
+            }
+            return render(self.request, "checkout.html",context)
+        except ObjectDoesNotExist:
+            messages.error(self.request,"You do not have an active order")
+            return redirect("commerce:index")
+            
 
     def post(self,*args,**kwargs):
         form = CheckoutForm(self.request.POST or None)
+        paymentForm =  PaymentForm(self.request.POST or None)
         try:
-            order = Order.objects.get(user=request.user,ordered=False)
+            order = Order.objects.get(user=self.request.user,ordered=False)
+            context = {
+
+            "paymentForm": paymentForm,
+            "order":order
+            }
             if form.is_valid():
+                
                 firstname = form.cleaned_data.get("firstname")
                 lastname = form.cleaned_data.get("lastname")
                 county = form.cleaned_data.get("county")
@@ -93,7 +125,7 @@ class checkoutview(LoginRequiredMixin,View):
                 order_notes = form.cleaned_data.get("order_notes")
                 
                 shippingaddress = ShippingAddress(
-                    user = request.user,
+                    user = self.request.user,
                     firstname=firstname,
                     lastname= lastname,
                     county=county,
@@ -103,13 +135,27 @@ class checkoutview(LoginRequiredMixin,View):
                     zip=zip,
                     phone=phone,
                     email=email,
-                    order_notes= order_notes
+                    order_notes= order_notes,
+                    payment_option=payment_option,
                 )
                 shippingaddress.save()
                 order.shipping_address = shippingaddress
                 order.save()
+                context = {
+                "paymentForm": paymentForm,
+                "order":order
+                    }
+                if shippingaddress.payment_option == "M":
+                    print(shippingaddress.payment_option)
+                    return redirect("commerce:payment",str(shippingaddress.payment_option))
 
-                return redirect("commerce:checkout")
+                elif shippingaddress.payment_option == "P":
+                    pass
+
+                elif shippingaddress.payment_option == "S":
+                    pass
+
+                
 
             messages.warning(self.request,"Failed Checkout")
             return redirect("commerce:checkout")
@@ -119,12 +165,51 @@ class checkoutview(LoginRequiredMixin,View):
             return redirect("commerce:checkout")
 
 class PaymentView(View):
+    model=Order
     def get(self,*args,**kwargs):
-        return render(self.request,"payment.html")
+        try:
+            order = Order.objects.get(user=self.request.user,ordered=False)
+            paymentForm = PaymentForm()
+            context = {
+            "paymentForm": paymentForm,
+            "order":order
+            }
+          
+            return render(self.request, "payment.html",context)
+        except ObjectDoesNotExist:
+            messages.error(self.request,"You do not have an active order")
+            return redirect("commerce:index")
+    def post(self,*args,**kwargs):
+        paymentForm =  PaymentForm(self.request.POST or None, self.request.FILES)
+        try:
+            order = Order.objects.get(user=self.request.user,ordered=False)
+            
+            context = {
+            "paymentForm": paymentForm,
+            "order":order
+            }
+            phonenumber = self.request.POST.get("phonenumber")
+            amount = order.get_order_total()
+           
+            lipa_na_mpesa(amount,phonenumber)
+            
+           
+                
+                
+
+            return render(self.request,"payment.html",context)
+            print("NOT VALID")
+            return redirect("commerce:checkout")
+        
+
+        except ObjectDoesNotExist:
+            messages.error(self.request,"You do not have an active order")
+            return redirect()
+            
 
 class stringArtsView(ListView):
     model=Item
-    queryset  = Item.objects.filter(category='String Art')
+    queryset  = Item.objects.filter(category='String Art').order_by('-id')
     context = {
 
     }
@@ -133,15 +218,29 @@ class stringArtsView(ListView):
 
 class crotchetsView(ListView):
     model = Item
-    queryset=Item.objects.filter(category='Crotchet Products') | Item.objects.filter(category='Crotchet Bag')
+    queryset=Item.objects.filter(category='Crotchet Products') | Item.objects.filter(category='Crotchet Bag').order_by('-id')
     
 
     template_name ="crotchets.html"
 
+class crotchetBagsView(ListView):
+    model = Item
+    queryset= Item.objects.filter(category='Crotchet Bag').order_by('-id')
+    
+
+    template_name ="crotchetsbags.html"
+
+class crotchetProductsView(ListView):
+    model = Item
+    queryset= Item.objects.filter(category='Crotchet Products').order_by('-id')
+    
+
+    template_name ="crotchetsProducts.html"
+
 
 class yarnAccessoriesView(ListView):
     model=Item
-    queryset  = Item.objects.filter(category='Yarn & Accessories')
+    queryset  = Item.objects.filter(category='Yarn & Accessories').order_by('-id')
     context = {
 
     }
@@ -199,7 +298,7 @@ def logoutUser(request):
     messages.info(
         request, 'You have logged out.')  
     # if current_user.is_admin:
-    return redirect('"commerce:index')
+    return redirect('commerce:index')
     
 
 #adding an item to cart
@@ -245,7 +344,7 @@ def remove_from_cart(request,slug):
     order_qs = Order.objects.filter(user=request.user,ordered=False)
     if order_qs.exists():
         order = order_qs[0]
-        print("order",order)
+        
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(item=item,user=request.user,ordered=False)[0]
             order_item.quantity =0
@@ -270,7 +369,7 @@ def remove_single_item_from_cart(request,slug):
     order_qs = Order.objects.filter(user=request.user,ordered=False)
     if order_qs.exists():
         order = order_qs[0]
-        print("order",order)
+        
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(item=item,user=request.user,ordered=False)[0]
             if  order_item.quantity >1:
@@ -294,7 +393,7 @@ def remove_single_item_from_cart(request,slug):
 #delete an item from the database
 def delete_product(request,slug):
     item = get_object_or_404(Item,slug=slug)
-    print(item)
+    
     if item:
         item.delete()
         messages.success(request,"Item Deleted successfully")
@@ -303,33 +402,7 @@ def delete_product(request,slug):
         messages.warning(request,"Item does not exist")
         return redirect("commerce:admin-dashboard")
 
-# def payment(request):
-#     url = "https://sandbox.safaricom.co.ke/oauth/v1/generate"
-#     querystring = {"grant_type":"client_credentials"}
-#     payload = ""
-#     headers = {
-#     "Authorization": "Basic SWZPREdqdkdYM0FjWkFTcTdSa1RWZ2FTSklNY001RGQ6WUp4ZVcxMTZaV0dGNFIzaA=="
-#     }
-#     response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
-#     print(response.text)
 
-
-
-def mpesaPayment(request):
-    cl = MpesaClient()
-    print(cl)
-    # Use a Safaricom phone number that you have access to, for you to be able to view the prompt.
-    phone_number = '0703446950'
-    amount = 1
-    account_reference = 'reference'
-    transaction_desc = 'Description'
-    callback_url = 'https://darajambili.herokuapp.com/express-payment'
-    response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
-    return HttpResponse(response)    
-
-def stk_push_callback(request):
-        data = request.body
-        # You can do whatever you want with the notification received from MPESA here. 
 
 
 #admin Dashboard page
@@ -342,9 +415,10 @@ def adminDash(request):
 
 #admin all products page
 class admin_allproductsView(View):
+    paginate_by=1
     def get(self,*args,**kwargs):
         form = AddProductForm()
-        object_list = Item.objects.all()
+        object_list = Item.objects.all().order_by('-id')
         context = {
             "form":form,
             "object_list":object_list
@@ -353,13 +427,42 @@ class admin_allproductsView(View):
         return render(self.request, "adminDash/admin_allproducts.html",context)
 
     def post(self,*args,**kwargs):
-        form = CheckoutForm(self.request.POST or None)
-        pass
-        model=Item
-        context = {
+        form = AddProductForm(self.request.POST or None, self.request.FILES)
+        
+        
+        if form.is_valid():
+            title = form.cleaned_data.get("title")
+            desc = form.cleaned_data.get("desc")
+            price = form.cleaned_data.get("price")
+            discount_price = form.cleaned_data.get("discounted_price")
+            category = form.cleaned_data.get("category")
+            label = form.cleaned_data.get("label")
+            image = form.cleaned_data.get("image")
+            image1 = form.cleaned_data.get("image1")
+            image2 = form.cleaned_data.get("image2")
+            image3 = form.cleaned_data.get("image3")
+            image4 = form.cleaned_data.get("image4")
+            
+            item = Item(
+                title=title,
+                desc=desc,
+                price=price,
+                discount_price=discount_price,
+                category=category,
+                label=label,
+                image=image,
+                image1=image1,
+                image2=image2,
+                image3=image3,
+                image4=image4
+            )
+           
+            
+            return redirect("commerce:admin_allproducts")
+        return redirect("commerce:checkout")
 
-        }
-        template_name=  'adminDash/admin_allproducts.html'
+
+       
 
 
 
