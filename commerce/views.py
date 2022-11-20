@@ -8,8 +8,8 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.views import View
 import phonenumbers
 from pytz import timezone
-from requests import request
-from .models import Item,Order,OrderItem,ShippingAddress
+from requests import Response, request
+from .models import Item,Order,OrderItem,ShippingAddress,CallBackURL
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm,CheckoutForm,AddProductForm,PaymentForm
 from django.views.generic import ListView,DetailView
@@ -21,11 +21,22 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
 # from django_daraja.mpesa.core import MpesaClient
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-from .serializers import MpesaCheckoutSerializer
+from .serializers import MpesaCheckoutSerializer,CallBackSerializer
 from bootstrap_modal_forms.generic import BSModalCreateView
 from .mpesa import lipa_na_mpesa
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+import base64
+from datetime import datetime
+import requests
+from requests.auth import HTTPBasicAuth
+import json
+import pdb
 
 # from .util import MpesaGateWay
 
@@ -191,7 +202,7 @@ class PaymentView(View):
             phonenumber = self.request.POST.get("phonenumber")
             amount = order.get_order_total()
            
-            lipa_na_mpesa(amount,phonenumber)
+            # lipa_na_mpesa(amount,phonenumber)
             
            
                 
@@ -248,17 +259,19 @@ class yarnAccessoriesView(ListView):
 
 @login_required
 def orders(request):
+    all_oders = Order.objects.filter(user=request.user).order_by('-ordered_date')
+    print(all_oders)
     context = {
-
+        "all_orders":all_oders
     }
 
-    return render(request,"orders.html")
+    return render(request,"orders.html",context)
 
 
 #userRegistration page
 def signuppage(request):
     form = CreateUserForm()
-
+ 
     if request.method == "POST":
         form =CreateUserForm(request.POST)
         if form.is_valid():
@@ -278,6 +291,7 @@ def loginpage(request):
         password = request.POST.get('password')
         user = authenticate(request, username=username,
                             password=password)
+        print(user)
         if user is not None:
             login(request, user)
             messages.success(request, 'Logged in as' + ' ' + username)
@@ -414,8 +428,22 @@ def adminDash(request):
 
 
 #admin all products page
+
+def addproduct(request, id=None):
+    detail = get_object_or_404(Car, id=id)
+    form = AddProductForm(request.POST or None, instance=detail)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return HttpResponseRedirect(instance.get_absolute_url())
+    context = {
+        "form": form,
+        "title": "Update Car"
+    }
+    return render(request, 'car_create.html', context)
+
 class admin_allproductsView(View):
-    paginate_by=1
+    paginate_by=10
     def get(self,*args,**kwargs):
         form = AddProductForm()
         object_list = Item.objects.all().order_by('-id')
@@ -427,11 +455,11 @@ class admin_allproductsView(View):
         return render(self.request, "adminDash/admin_allproducts.html",context)
 
     def post(self,*args,**kwargs):
-        form = AddProductForm(self.request.POST or None, self.request.FILES)
-        
-        
-        if form.is_valid():
-            title = form.cleaned_data.get("title")
+        form = AddProductForm(self.request.POST or None, self.request.FILES or None)
+        if form.is_valid(self):
+            form = form.save(commit=False)
+            
+            title = form.cleaned_data['title']
             desc = form.cleaned_data.get("desc")
             price = form.cleaned_data.get("price")
             discount_price = form.cleaned_data.get("discounted_price")
@@ -442,7 +470,9 @@ class admin_allproductsView(View):
             image2 = form.cleaned_data.get("image2")
             image3 = form.cleaned_data.get("image3")
             image4 = form.cleaned_data.get("image4")
-            
+            print("form is valid")
+            print(title)
+            print(title,desc,price,discount_price,category,label,image,image1,image2,image3,image4)
             item = Item(
                 title=title,
                 desc=desc,
@@ -459,6 +489,7 @@ class admin_allproductsView(View):
            
             
             return redirect("commerce:admin_allproducts")
+        print("form is invalid")
         return redirect("commerce:checkout")
 
 
@@ -508,3 +539,69 @@ class AddProductView(BSModalCreateView):
     form_class = AddProductForm
     success_message = 'Success: Book was created.'
     success_url = reverse_lazy('index')
+
+
+
+def search_product(request):
+    if 'product_name' in request.GET and request.GET["product_name"]:
+        search_name = request.GET.get("product_name")
+        object_list = Item.objects.filter(Q(title__icontains=search_name) | Q(desc__icontains=search_name))
+ 
+        message = f"{search_name}"
+        print(object_list)
+        context= {
+            "message":message,
+            "object_list":object_list
+        }
+        return render(request,"search_results.html",context)
+
+ 
+    else:
+        message = "Enter a product to search"
+        context = {"message":message}
+        return render(request,"search_results.html",context)
+#APIs
+
+
+# class CallBackURLDetails(APIView):
+#     def get(self, request, format=None):
+#         allcallbacks = CallBackURL.objects.all()
+#         serializer = CallBackSerializer(allcallbacks, many=True)
+#         return Response(serializer.data)
+
+#     def post(self,request,CallbackMetadata,CheckoutRequestID,MerchantRequestID,ResultCode,ResultDesc):
+#         callBackInstance = CallBackURL.objects.create(
+#             CallbackMetadata=self.CallbackMetadata,
+#             CheckoutRequestID=self.CheckoutRequestID,
+#             MerchantRequestID=self.MerchantRequestID,
+#             ResultCode=self.ResultCode,
+#             ResultDesc=self.ResultDesc
+#         )
+#         print(callBackInstance)
+#         serializer = CallBackSerializer(callBackInstance,many=False)
+#         return Response(serializer.data)
+
+
+@api_view(['GET','POST'])
+def CallBackURLDetailsAPI(request):
+    if request.method == 'GET':
+        query = request.GET.get('query')
+        if query == None:
+            query = ''
+        allcallbacks = CallBackURL.objects.all()
+   
+        serializer = CallBackSerializer(allcallbacks,many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        callBackInstance = CallBackURL.objects.create(
+            CallbackMetadata=request.data['CallbackMetadata'],
+            CheckoutRequestID=request.data['CheckoutRequestID'],
+            MerchantRequestID=request.data['MerchantRequestID'],
+            ResultCode=request.data['ResultCode'],
+            ResultDesc=request.data['ResultDesc']
+        )
+        serializer = CallBackSerializer(callBackInstance,many=False)
+        return Response(serializer.data)
+
+

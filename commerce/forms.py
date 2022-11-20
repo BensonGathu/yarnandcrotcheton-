@@ -28,7 +28,7 @@ class CreateUserForm(UserCreationForm):
         model = User
         fields = ['username','email','password1','password2']
 
-
+ 
 
 PAYMENT_CHOICES = (
     ("S","Stripe"),

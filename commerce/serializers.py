@@ -1,7 +1,8 @@
 from .validators import validate_possible_number
 from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 
-from .models import PaymentTransaction
+from .models import PaymentTransaction,CallBackURL
 # from .exceptions import ValidationError
 
 
@@ -53,3 +54,11 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentTransaction
         fields = "__all__"
+
+
+
+class CallBackSerializer(ModelSerializer):
+    class Meta:
+        model = CallBackURL
+        fields = '__all__'
+

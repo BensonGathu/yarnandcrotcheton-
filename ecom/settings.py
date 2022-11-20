@@ -30,7 +30,7 @@ SECRET_KEY =  config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS')
+ALLOWED_HOSTS =  ['127.0.0.1','5da1-154-70-17-86.eu.ngrok.io']
 
 
 # Application definition
@@ -53,9 +53,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'commerce',
-     "django_bootstrap5",
-     'crispy_forms',
-         'bootstrap_modal_forms',
+    "django_bootstrap5",
+    'crispy_forms',
+    'bootstrap_modal_forms',
+    'rest_framework',
 
     #  'django_countries',
     #  'phonenumbers',

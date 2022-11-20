@@ -156,5 +156,26 @@ class PaymentTransaction(models.Model):
 
 
 
-class Galler(models.Model):
+class Gallery(models.Model):
     pass
+
+
+class MpesaPaymentAPI(models.Model):
+    pass
+
+class CallBackURL(models.Model):
+    CallbackMetadata = models.CharField(max_length=600)
+    CheckoutRequestID = models.CharField(max_length=600)
+    MerchantRequestID = models.CharField(max_length=600)
+    ResultCode = models.CharField(max_length=600)
+    ResultDesc = models.CharField(max_length=600)
+    
+
+
+# {
+# "CallbackMetadata":"CallbackMetadata",
+# "CheckoutRequestID":"CheckoutRequestID",
+# "MerchantRequestID":"MerchantRequestID",
+# "ResultCode":"ResultCode",
+# "ResultDesc":"ResultDesc"
+# }

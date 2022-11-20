@@ -4,7 +4,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import index, productDetailsView,shop_cart,remove_from_cart,shopView,orders,add_to_cart,signuppage,loginpage,logoutUser,crotchetsView,remove_single_item_from_cart,checkoutview,PaymentView,stringArtsView,yarnAccessoriesView,adminDash,admin_allproductsView,admin_crotchetbagsView,admin_crotchetproductsView,admin_stringsView,admin_yarnView,delete_product,AddProductView,crotchetBagsView,crotchetProductsView
+from .views import index, productDetailsView,shop_cart,remove_from_cart,shopView,orders,add_to_cart,signuppage,loginpage,logoutUser,crotchetsView,remove_single_item_from_cart,checkoutview,PaymentView,stringArtsView,yarnAccessoriesView,adminDash,admin_allproductsView,admin_crotchetbagsView,admin_crotchetproductsView,admin_stringsView,admin_yarnView,delete_product,AddProductView,crotchetBagsView,crotchetProductsView,CallBackURLDetailsAPI,search_product
 app_name = 'commerce'
 urlpatterns = [ 
     
@@ -36,9 +36,14 @@ urlpatterns = [
     path('adminyarn/',admin_yarnView.as_view(),name="admin_yarn"),
     path("delete_product/<slug>/",delete_product,name="delete_product"),
     path("addProduct/",AddProductView.as_view(),name="add_product"),
+    path("search_product/",search_product,name="search_product"),
+
+
+    #APIs
+    path("callbacks/",CallBackURLDetailsAPI,name="callback"),
 
 
 ] 
 
-if settings.DEBUG:
+if settings.DEBUG: 
     urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
