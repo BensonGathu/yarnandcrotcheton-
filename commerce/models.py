@@ -106,11 +106,13 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
     shipping_address = models.ForeignKey('ShippingAddress',on_delete=models.SET_NULL,null=True,blank=True)
+    delivered = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.user.username
     
-    def get_order_total(self):
+    def get_order_total(self): 
         total=0
         for order_item in self.items.all():
             total += order_item.get_final_total()

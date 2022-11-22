@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap_modal_forms',
     'rest_framework',
+    'delivery'
 
     #  'django_countries',
     #  'phonenumbers',

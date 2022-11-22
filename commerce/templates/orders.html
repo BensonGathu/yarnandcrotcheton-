@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% load static %}
+{% load orders_templatetags %} 
 <style>
     .gradient-custom {
 /* fallback for old browsers */
@@ -13,7 +15,15 @@ background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 
 }
 </style>
 
+
+
 {% block content%} 
+{% for order in all_orders %}
+
+
+<!-- {{order}}  -->
+
+{% endfor %}
 <section class="h-100 gradient-custom">
     <div class="container py-5">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -26,22 +36,22 @@ background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 
                
                 <div class="row">
                     <div class="col-md-3">
-                       <small> ORDER PLACED<br>
+                       <small><b> ORDER PLACED</b><br>
                         {{order.ordered_date}} 
                     </small>
                     </div>
                     <div class="col-md-3">
-                        <small> SHIPPED TO <br>
+                        <small> <b> SHIPPED TO</b> <br>
                         {{order.shipping_address}} 
                     </small>
                      </div>
                     <div class="col-md-3">
-                        <small> TOTAL <br>
+                        <small> <b> TOTAL </b><br>
                            Kes. {{order.get_order_total}}
                     </small>
                      </div>
                      <div class="col-md-3">
-                        <small> ORDER #
+                        <small> <b> ORDER #</b>
                         245485
                     </small>
                     <br>
@@ -92,6 +102,8 @@ background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 
                       </div>
                     </div>
                   </div> -->
+                  
+                  
                 </div>
               </div>
 
